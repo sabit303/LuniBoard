@@ -454,3 +454,17 @@ func TestEventRateLimit(t *testing.T) {
 		t.Fatalf("expected 3 rate-limited acks, got %d", limited)
 	}
 }
+
+func TestRateKey(t *testing.T) {
+	for addr, want := range map[string]string{
+		"192.168.1.5:1234":         "192.168.1.5",
+		"[2001:db8:1:2:aaaa::1]:5": "2001:db8:1:2::/64",
+		"[2001:db8:1:2:bbbb::9]:5": "2001:db8:1:2::/64",
+		"[fe80::1%wlan0]:5":        "fe80::/64",
+		"[::ffff:10.0.0.1]:5":      "10.0.0.1",
+	} {
+		if got := rateKey(&http.Request{RemoteAddr: addr}); got != want {
+			t.Errorf("rateKey(%q) = %q, want %q", addr, got, want)
+		}
+	}
+}

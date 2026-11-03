@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="send_clipboard"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/action_send_clipboard"
+        android:shortcutLongLabel="@string/shortcut_send_clipboard_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.universalclipboard"
+            android:targetClass="com.universalclipboard.sharing.SendClipboardActivity" />
+    </shortcut>
+</shortcuts>

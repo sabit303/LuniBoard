@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Universal Clipboard</string>
+    <string name="share_label">Send to computer</string>
+    <string name="shortcut_send_clipboard_long">Send clipboard to computers</string>
+
+    <!-- Tabs and titles -->
+    <string name="tab_home">Send</string>
+    <string name="tab_devices">Computers</string>
+    <string name="tab_history">History</string>
+    <string name="tab_settings">Settings</string>
+    <string name="title_pair">Pair a computer</string>
+
+    <!-- Actions -->
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_clear_history">Clear history</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_done">Done</string>
+    <string name="action_enable_sync">Turn on synchronization</string>
+    <string name="action_pair">Pair</string>
+    <string name="action_pair_computer">Pair a computer</string>
+    <string name="action_paste">Paste</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_retry">Retry now</string>
+    <string name="action_save">Save</string>
+    <string name="action_send">Send</string>
+    <string name="action_send_clipboard">Send clipboard</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_try_again">Try again</string>
+    <string name="copied">Copied</string>
+
+    <!-- Home -->
+    <string name="home_text_label">Text or link</string>
+    <string name="home_text_placeholder">Type, paste, or share something to this app</string>
+    <string name="home_android_hint">Android does not let apps read the clipboard in the background, so copying on this phone is not sent automatically. Use Share → Universal Clipboard, the Paste button here, or the “Send clipboard” shortcut. Content copied on your computers arrives here while the app is open, or always if “Background connection” is on.</string>
+    <string name="paste_sensitive_warning">This content was marked as sensitive (for example a password). Check before sending.</string>
+    <string name="send_to">Send to</string>
+    <string name="result_no_targets">No connected computer to send to.</string>
+
+    <string name="status_sync_off_title">Synchronization is off</string>
+    <string name="status_sync_off_body">Nothing is sent or received.</string>
+    <string name="status_no_devices_title">No computers paired</string>
+    <string name="status_no_devices_body">Run “universal-clipboard pair” on your computer, then pair it here.</string>
+    <string name="status_none_connected_title">Not connected</string>
+    <string name="status_none_connected_body">Your computers are not reachable. Make sure they are on the same network and the daemon is running.</string>
+    <string name="status_connected_title">Connected to %1$d of %2$d</string>
+    <string name="status_background_on">Background connection is on: content from your computers is copied here even when the app is closed.</string>
+    <string name="status_background_off">Content from your computers is copied here while the app is open.</string>
+
+    <!-- Connection states -->
+    <string name="status_connected">Connected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_offline">Offline</string>
+    <string name="status_unauthorized">Access revoked</string>
+    <string name="status_idle">Not connected</string>
+    <string name="last_seen">Last seen %1$s</string>
+
+    <!-- Delivery -->
+    <string name="delivery_applied">delivered</string>
+    <string name="delivery_duplicate">already delivered</string>
+    <string name="delivery_sent">sent, no confirmation yet</string>
+    <string name="delivery_offline">offline</string>
+    <string name="delivery_ignored">ignored by the computer</string>
+    <string name="delivery_stale">newer content already there</string>
+    <string name="delivery_expired">expired</string>
+    <string name="delivery_failed">failed</string>
+
+    <!-- Devices -->
+    <string name="devices_empty_title">No computers yet</string>
+    <string name="devices_empty_body">Pair a computer running the Universal Clipboard daemon to start sharing your clipboard.</string>
+    <string name="permission_send">Send to this computer</string>
+    <string name="permission_receive">Receive from this computer</string>
+    <string name="unpair_title">Remove %1$s?</string>
+    <string name="unpair_body">This phone will forget %1$s and stop syncing with it. Also run “universal-clipboard unpair” on %1$s to revoke this phone there.</string>
+
+    <!-- Pairing -->
+    <string name="pair_intro">On your computer run “universal-clipboard pair”. It shows a QR code and a pairing code.</string>
+    <string name="pair_scan_qr">Scan QR code</string>
+    <string name="pair_nearby">Computers on this network</string>
+    <string name="pair_nearby_searching">Searching… (requires mDNS; if nothing appears, scan the QR code instead)</string>
+    <string name="pair_link">Or paste a pairing link</string>
+    <string name="pair_enter_code">Pair with %1$s</string>
+    <string name="pair_enter_code_body">Enter the pairing code shown on the computer.</string>
+    <string name="pair_confirm">Pair with %1$s?</string>
+    <string name="pair_waiting">Approve on %1$s</string>
+    <string name="pair_verification_label">Verification code</string>
+    <string name="pair_verification_body">Approve the request on the computer only if it shows exactly this code.</string>
+    <string name="pair_success">Paired with %1$s</string>
+    <string name="pair_success_body">It connects automatically whenever both devices are on the same network.</string>
+    <string name="pair_failed">Pairing failed</string>
+
+    <!-- History -->
+    <string name="history_empty">Nothing here yet.</string>
+    <string name="history_disabled">History is turned off.</string>
+    <string name="history_saved">Saved on this phone (app-private storage).</string>
+    <string name="history_memory">Kept until the app is closed.</string>
+    <string name="history_from">From %1$s</string>
+    <string name="history_sent">Sent from this phone</string>
+    <string name="clear_history_title">Clear history?</string>
+    <string name="clear_history_body">All entries are deleted from this phone. Your computers keep their own history.</string>
+
+    <!-- Settings -->
+    <string name="settings_device">This phone</string>
+    <string name="settings_device_name">Name shown to computers</string>
+    <string name="settings_sync">Synchronization</string>
+    <string name="settings_sync_enabled">Synchronization</string>
+    <string name="settings_sync_enabled_body">When off, the app disconnects and nothing is sent or received.</string>
+    <string name="settings_receive">Receive from computers</string>
+    <string name="settings_receive_body">Copy text from your computers to this phone\'s clipboard.</string>
+    <string name="settings_background">Background connection</string>
+    <string name="settings_background_body">Stay connected while the app is closed so content copied on your computers reaches this phone. Shows a permanent notification and uses some battery.</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notify_receive">Notify when content arrives</string>
+    <string name="settings_notify_receive_body">Content is hidden on the lock screen.</string>
+    <string name="settings_history">History</string>
+    <string name="settings_history_enabled">Keep history</string>
+    <string name="settings_history_persist">Save history on this phone</string>
+    <string name="settings_history_persist_body">When off, history is only kept in memory. Turning it off deletes the saved file.</string>
+    <string name="settings_limits">Android limitations</string>
+    <string name="settings_limits_body">Android allows only the app you are using to read the clipboard, so this app cannot detect what you copy in other apps. It never uses accessibility services or other workarounds. Send content with the share sheet, the Paste button, or the “Send clipboard” shortcut. Writing received content to the clipboard works while the app is open or the background connection is on. Images and files are not supported yet.</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_device_id">Device ID: %1$s</string>
+    <string name="settings_fingerprint">Certificate fingerprint (SHA-256):</string>
+
+    <!-- Share / send clipboard -->
+    <string name="share_title">Send to computer</string>
+    <string name="share_no_devices">No computer is paired yet.</string>
+    <string name="toast_clipboard_empty">The clipboard does not contain text.</string>
+    <string name="toast_clipboard_sensitive">The clipboard content is marked as sensitive and was not sent. Open the app to send it explicitly.</string>
+    <string name="toast_no_connected">No computer is connected.</string>
+    <string name="toast_send_failed">Sending failed.</string>
+    <plurals name="toast_sent">
+        <item quantity="one">Delivered to %1$d of %2$d computers</item>
+        <item quantity="other">Delivered to %1$d of %2$d computers</item>
+    </plurals>
+
+    <!-- Service and notifications -->
+    <string name="channel_service">Background connection</string>
+    <string name="channel_service_description">Shown while the app stays connected to your computers.</string>
+    <string name="channel_received">Received clipboard</string>
+    <string name="channel_received_description">Content copied from a computer.</string>
+    <string name="notification_received_title">Copied from %1$s</string>
+    <string name="service_starting">Connecting to your computers…</string>
+    <string name="service_sync_off">Synchronization is off</string>
+    <string name="service_no_devices">No computers paired</string>
+    <string name="service_waiting">Waiting for your computers…</string>
+    <plurals name="service_connected">
+        <item quantity="one">Connected to %1$d computer</item>
+        <item quantity="other">Connected to %1$d computers</item>
+    </plurals>
+</resources>

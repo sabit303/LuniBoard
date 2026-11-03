@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net"
 	"net/http"
+	"strings"
 
 	"github.com/coder/websocket"
 
@@ -21,19 +22,32 @@ func writeError(w http.ResponseWriter, status int, code, msg string) {
 	_ = json.NewEncoder(w).Encode(protocol.HTTPError{Error: protocol.ErrorMessage{Code: code, Message: msg}})
 }
 
-func remoteIP(r *http.Request) string {
+// rateKey returns the rate-limiting key for a request: the IPv4 address, or
+// the /64 prefix for IPv6 so a single host cannot evade limits (or exhaust
+// the limiter table) by rotating through addresses in its prefix.
+func rateKey(r *http.Request) string {
 	host, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
-		return r.RemoteAddr
+		host = r.RemoteAddr
 	}
-	return host
+	if i := strings.IndexByte(host, '%'); i >= 0 {
+		host = host[:i]
+	}
+	ip := net.ParseIP(host)
+	if ip == nil {
+		return host
+	}
+	if v4 := ip.To4(); v4 != nil {
+		return v4.String()
+	}
+	return ip.Mask(net.CIDRMask(64, 128)).String() + "/64"
 }
 
 // handlePair accepts pairing requests from devices that are not (yet)
 // trusted. It never grants clipboard access by itself: the pairing manager
 // requires an open window, the correct code and explicit local approval.
 func (m *Manager) handlePair(w http.ResponseWriter, r *http.Request) {
-	if !m.pairLimiter.Allow(remoteIP(r)) {
+	if !m.pairLimiter.Allow(rateKey(r)) {
 		writeError(w, http.StatusTooManyRequests, protocol.ErrCodeRateLimited, "too many pairing attempts")
 		return
 	}
