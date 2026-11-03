@@ -1,0 +1,21 @@
+{
+  "type": "hello",
+  "protocol_version": 1,
+  "data": {
+    "device": {
+      "id": "3b8f6a52-1c4e-4d7a-9e0b-7f2a5c6d8e91",
+      "name": "Pixel 8",
+      "platform": "android",
+      "app_version": "0.1.0"
+    },
+    "min_protocol_version": 1,
+    "max_protocol_version": 1,
+    "time": 1793730000000,
+    "capabilities": [
+      "clipboard.send",
+      "clipboard.receive"
+    ],
+    "max_payload_bytes": 1048576,
+    "listen_port": 0
+  }
+}

@@ -1,0 +1,48 @@
+# Universal Clipboard daemon configuration.
+# See docs/setup.md for every option. Restart the daemon after editing.
+
+[device]
+name = "my-computer"
+
+[network]
+listen_address = ''
+port = 47823
+max_connections = 64
+
+[discovery]
+enabled = true
+advertise = true
+interfaces = []
+
+[clipboard]
+backend = 'auto'
+poll_interval = '750ms'
+skip_sensitive = true
+
+[sync]
+enabled = true
+auto_send = true
+receive = true
+max_payload_bytes = 1048576
+max_event_age = '2m0s'
+ordering_tolerance = '2s'
+excluded_content_types = []
+relay = false
+
+[history]
+enabled = true
+persist = false
+max_entries = 50
+
+[pairing]
+window = '2m0s'
+max_attempts = 5
+
+[security]
+events_per_second = 5.0
+event_burst = 20
+
+[logging]
+level = 'info'
+format = 'text'
+file = true

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.universal-clipboard.org/v1/hello.schema.json",
+  "title": "Hello",
+  "type": "object",
+  "required": ["device", "min_protocol_version", "max_protocol_version", "time", "max_payload_bytes"],
+  "properties": {
+    "device": { "$ref": "device-info.schema.json" },
+    "min_protocol_version": { "$ref": "common.schema.json#/$defs/protocol_version" },
+    "max_protocol_version": { "$ref": "common.schema.json#/$defs/protocol_version" },
+    "time": { "$ref": "common.schema.json#/$defs/unix_millis" },
+    "capabilities": { "type": "array", "maxItems": 32, "items": { "type": "string" } },
+    "max_payload_bytes": { "type": "integer", "minimum": 0 },
+    "listen_port": { "type": "integer", "minimum": 0, "maximum": 65535 }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.universal-clipboard.org/v1/envelope.schema.json",
+  "title": "WebSocket envelope",
+  "description": "Every WebSocket text message. Receivers ignore unknown types and unknown fields.",
+  "type": "object",
+  "required": ["type", "protocol_version", "data"],
+  "properties": {
+    "type": { "type": "string", "minLength": 1 },
+    "protocol_version": { "$ref": "common.schema.json#/$defs/protocol_version" },
+    "data": { "type": "object" }
+  },
+  "allOf": [
+    { "if": { "properties": { "type": { "const": "hello" } } }, "then": { "properties": { "data": { "$ref": "hello.schema.json" } } } },
+    { "if": { "properties": { "type": { "const": "clipboard.event" } } }, "then": { "properties": { "data": { "$ref": "clipboard-event.schema.json" } } } },
+    { "if": { "properties": { "type": { "const": "clipboard.ack" } } }, "then": { "properties": { "data": { "$ref": "ack.schema.json" } } } },
+    { "if": { "properties": { "type": { "const": "error" } } }, "then": { "properties": { "data": { "$ref": "error.schema.json" } } } }
+  ]
+}

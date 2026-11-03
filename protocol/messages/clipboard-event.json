@@ -1,0 +1,17 @@
+{
+  "type": "clipboard.event",
+  "protocol_version": 1,
+  "data": {
+    "event_id": "6f1c2a7e-9b3d-4e2f-8a61-0c5d9e7b4a10",
+    "origin_device_id": "3b8f6a52-1c4e-4d7a-9e0b-7f2a5c6d8e91",
+    "content_type": "text",
+    "timestamp": 1793730000000,
+    "protocol_version": 1,
+    "payload": {
+      "text": "Hello from Android",
+      "mime_type": "text/plain",
+      "size": 18,
+      "sha256": "08874a21993ffe9aadc64d5fc93e62711d60c05f5792b74c693ef2ccb00188e7"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.universal-clipboard.org/v1/clipboard-event.schema.json",
+  "title": "ClipboardEvent",
+  "type": "object",
+  "required": ["event_id", "origin_device_id", "content_type", "timestamp", "protocol_version", "payload"],
+  "properties": {
+    "event_id": { "$ref": "common.schema.json#/$defs/id" },
+    "origin_device_id": { "$ref": "common.schema.json#/$defs/id" },
+    "content_type": { "enum": ["text", "url"] },
+    "timestamp": { "$ref": "common.schema.json#/$defs/unix_millis", "description": "Origin wall clock, Unix milliseconds" },
+    "protocol_version": { "$ref": "common.schema.json#/$defs/protocol_version" },
+    "payload": {
+      "type": "object",
+      "required": ["text", "mime_type", "size", "sha256"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "mime_type": { "type": "string", "pattern": "^text/", "maxLength": 128 },
+        "size": { "type": "integer", "minimum": 1, "description": "UTF-8 byte length of text" },
+        "sha256": { "$ref": "common.schema.json#/$defs/fingerprint", "description": "Lowercase hex SHA-256 of the UTF-8 text" }
+      }
+    }
+  }
+}

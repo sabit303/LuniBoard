@@ -1,0 +1,8 @@
+{
+  "type": "clipboard.ack",
+  "protocol_version": 1,
+  "data": {
+    "event_id": "6f1c2a7e-9b3d-4e2f-8a61-0c5d9e7b4a10",
+    "status": "applied"
+  }
+}

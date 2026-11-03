@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.universal-clipboard.org/v1/device-info.schema.json",
+  "title": "DeviceInfo",
+  "type": "object",
+  "required": ["id", "name", "platform"],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/id" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 256, "description": "1-64 Unicode characters, no control characters" },
+    "platform": { "enum": ["linux", "windows", "macos", "android", "ios", "other"] },
+    "app_version": { "type": "string", "maxLength": 32 }
+  }
+}

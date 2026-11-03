@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.universal-clipboard.org/v1/pair-request.schema.json",
+  "title": "PairRequest (POST /v1/pair body)",
+  "type": "object",
+  "required": ["protocol_version", "device", "code", "listen_port"],
+  "properties": {
+    "protocol_version": { "$ref": "common.schema.json#/$defs/protocol_version" },
+    "device": { "$ref": "device-info.schema.json" },
+    "code": { "type": "string", "minLength": 8, "maxLength": 16, "description": "Pairing code; case-insensitive, dashes and spaces ignored" },
+    "listen_port": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "0 for devices that do not accept connections (mobile)" }
+  }
+}

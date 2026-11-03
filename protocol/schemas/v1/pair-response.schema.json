@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.universal-clipboard.org/v1/pair-response.schema.json",
+  "title": "PairResponse",
+  "type": "object",
+  "required": ["protocol_version", "status", "device", "listen_port"],
+  "properties": {
+    "protocol_version": { "$ref": "common.schema.json#/$defs/protocol_version" },
+    "status": { "enum": ["approved", "rejected", "expired"] },
+    "device": { "$ref": "device-info.schema.json" },
+    "listen_port": { "type": "integer", "minimum": 0, "maximum": 65535 }
+  }
+}

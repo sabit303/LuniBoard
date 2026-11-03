@@ -1,0 +1,35 @@
+# Build output
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+coverage.*
+
+# Go
+/daemon/vendor/
+
+# Android / Gradle (future)
+.gradle/
+local.properties
+android/**/build/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# iOS / Xcode (future)
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Never commit device identities or local state
+**/identity/
+devices.json
+history.json
