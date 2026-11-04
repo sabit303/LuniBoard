@@ -13,8 +13,8 @@ import (
 	"github.com/coder/websocket"
 	"golang.org/x/time/rate"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/device"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/device"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 const (

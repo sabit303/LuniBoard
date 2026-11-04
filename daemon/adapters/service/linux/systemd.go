@@ -15,13 +15,16 @@ import (
 )
 
 // UnitName is the systemd user unit name.
-const UnitName = "universal-clipboard.service"
+const UnitName = "luniboard.service"
+
+// legacyUnitName is the unit installed before the daemon was renamed.
+const legacyUnitName = "universal-clipboard.service"
 
 // UnitOptions parameterize the generated unit.
 type UnitOptions struct {
-	// Executable is the absolute path of the universal-clipboard binary.
+	// Executable is the absolute path of the luniboard binary.
 	Executable string
-	// Home, when set, is exported as UCLIP_HOME.
+	// Home, when set, is exported as LUNIBOARD_HOME.
 	Home string
 }
 
@@ -29,8 +32,8 @@ type UnitOptions struct {
 func Unit(o UnitOptions) string {
 	var b strings.Builder
 	b.WriteString(`[Unit]
-Description=Universal Clipboard daemon (LAN clipboard synchronization)
-Documentation=https://github.com/universal-clipboard/universal-clipboard
+Description=LuniBoard daemon (LAN clipboard synchronization)
+Documentation=https://github.com/luniboard/luniboard
 After=network-online.target graphical-session.target
 Wants=network-online.target
 
@@ -39,7 +42,7 @@ Type=simple
 `)
 	fmt.Fprintf(&b, "ExecStart=%s daemon\n", systemdQuote(o.Executable))
 	if o.Home != "" {
-		fmt.Fprintf(&b, "Environment=%s\n", systemdQuote("UCLIP_HOME="+o.Home))
+		fmt.Fprintf(&b, "Environment=%s\n", systemdQuote("LUNIBOARD_HOME="+o.Home))
 	}
 	b.WriteString(`Restart=on-failure
 RestartSec=3
@@ -60,7 +63,7 @@ func systemdQuote(s string) string {
 	return `"` + r.Replace(s) + `"`
 }
 
-// UnitPath returns ~/.config/systemd/user/universal-clipboard.service (respecting XDG_CONFIG_HOME).
+// UnitPath returns ~/.config/systemd/user/luniboard.service (respecting XDG_CONFIG_HOME).
 func UnitPath() (string, error) {
 	base := os.Getenv("XDG_CONFIG_HOME")
 	if base == "" || !filepath.IsAbs(base) {
@@ -113,10 +116,21 @@ func Install(o UnitOptions) (string, error) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
+	removeLegacyUnit(ctx, filepath.Dir(p))
 	if err := systemctl(ctx, "daemon-reload"); err != nil {
 		return p, err
 	}
 	return p, systemctl(ctx, "enable", "--now", UnitName)
+}
+
+// removeLegacyUnit stops and removes the pre-rename unit so two daemons never run.
+func removeLegacyUnit(ctx context.Context, dir string) {
+	legacy := filepath.Join(dir, legacyUnitName)
+	if _, err := os.Stat(legacy); err != nil {
+		return
+	}
+	_ = systemctl(ctx, "disable", "--now", legacyUnitName)
+	_ = os.Remove(legacy)
 }
 
 // Uninstall stops, disables and removes the unit.
@@ -128,6 +142,7 @@ func Uninstall() error {
 	if err != nil {
 		return err
 	}
+	removeLegacyUnit(ctx, filepath.Dir(p))
 	if err := os.Remove(p); err != nil && !errors.Is(err, os.ErrNotExist) {
 		return err
 	}

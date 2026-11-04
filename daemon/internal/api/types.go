@@ -9,12 +9,12 @@ import (
 	"errors"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/device"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/discovery"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/synchronization"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/transport"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/clipboard"
+	"github.com/luniboard/luniboard/daemon/internal/device"
+	"github.com/luniboard/luniboard/daemon/internal/discovery"
+	"github.com/luniboard/luniboard/daemon/internal/synchronization"
+	"github.com/luniboard/luniboard/daemon/internal/transport"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // Errors that backends wrap to select HTTP status codes.

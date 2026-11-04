@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/security"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/security"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // RemoteError is an error reported by the remote device.

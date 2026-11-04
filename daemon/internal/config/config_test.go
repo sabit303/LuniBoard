@@ -122,3 +122,39 @@ func TestExampleConfigLoads(t *testing.T) {
 		t.Fatalf("example config differs from defaults:\n%s\n---\n%s", a, b)
 	}
 }
+
+func TestMigrateLegacyDirs(t *testing.T) {
+	base := t.TempDir()
+	p := Paths{
+		ConfigDir: filepath.Join(base, "config", AppDirName),
+		DataDir:   filepath.Join(base, "data", AppDirName),
+		StateDir:  filepath.Join(base, "state", AppDirName),
+	}
+	legacyData := filepath.Join(base, "data", legacyAppDirName)
+	if err := os.MkdirAll(filepath.Join(legacyData, "identity"), 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(legacyData, "devices.json"), []byte("{}"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	// The new config dir already exists: it must not be replaced.
+	if err := os.MkdirAll(p.ConfigDir, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(base, "config", legacyAppDirName), 0o700); err != nil {
+		t.Fatal(err)
+	}
+	moved, err := MigrateLegacyDirs(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(moved) != 1 {
+		t.Fatalf("moved %v", moved)
+	}
+	if _, err := os.Stat(filepath.Join(p.DataDir, "devices.json")); err != nil {
+		t.Fatal("data not migrated")
+	}
+	if _, err := os.Stat(filepath.Join(base, "config", legacyAppDirName)); err != nil {
+		t.Fatal("legacy config dir should be left alone when the new one exists")
+	}
+}

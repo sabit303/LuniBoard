@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.universal-clipboard.org/v1/clipboard-event.schema.json",
+  "$id": "https://schemas.luniboard.org/v1/clipboard-event.schema.json",
   "title": "ClipboardEvent",
   "type": "object",
   "required": ["event_id", "origin_device_id", "content_type", "timestamp", "protocol_version", "payload"],

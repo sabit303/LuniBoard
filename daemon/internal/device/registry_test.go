@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 func testDevice(id, name string) Device {

@@ -11,7 +11,7 @@
 ## Components
 
 ```
-                           ┌──────────────────────────── universal-clipboard daemon ───────────────────────────┐
+                           ┌──────────────────────────── luniboard daemon ───────────────────────────┐
   CLI / future GUI ──unix──▶ internal/api  ──▶ internal/application (wiring, lifecycle)                        │
    socket (0600)           │                     │                                                            │
                            │   internal/clipboard ── adapters/clipboard/{wayland,x11,mock}  (wl-clipboard,   │
@@ -26,7 +26,7 @@
                            │ internal/pairing  internal/device (trusted registry)   internal/discovery (mDNS)│
                            │        internal/security (identity, TLS, limits)   internal/history  storage   │
                            └───────────────────────────────────────────────────────────────────────────────────┘
-                                         ▲ wss + https (pinned mTLS)                ▲ DNS-SD _uclip._tcp
+                                         ▲ wss + https (pinned mTLS)                ▲ DNS-SD _luniboard._tcp
                                          │                                          │
                               Android / iOS apps, other daemons ─────────────────────┘
 ```
@@ -103,12 +103,12 @@ API shutdown request. Shutdown cancels contexts, closes the pairing window, clos
 
 | File | Content | Mode |
 |------|---------|------|
-| `$XDG_DATA_HOME/universal-clipboard/identity/key.pem` | private key | 0600 (startup fails if looser) |
+| `$XDG_DATA_HOME/luniboard/identity/key.pem` | private key | 0600 (startup fails if looser) |
 | `…/identity/cert.pem`, `identity.json` | certificate, device id | 0644 / 0600 |
 | `…/devices.json` | trusted devices, fingerprints, permissions | 0600 |
 | `…/history.json` | history, only when `history.persist = true` | 0600 |
-| `$XDG_CONFIG_HOME/universal-clipboard/config.toml` | configuration | 0600 |
-| `$XDG_STATE_HOME/universal-clipboard/daemon.log` | logs (never clipboard content) | 0600 |
-| `$XDG_RUNTIME_DIR/universal-clipboard/daemon.sock` | local API | 0600 in a 0700 dir |
+| `$XDG_CONFIG_HOME/luniboard/config.toml` | configuration | 0600 |
+| `$XDG_STATE_HOME/luniboard/daemon.log` | logs (never clipboard content) | 0600 |
+| `$XDG_RUNTIME_DIR/luniboard/daemon.sock` | local API | 0600 in a 0700 dir |
 
-All writes are atomic (temp file + fsync + rename). `--home DIR` / `UCLIP_HOME` relocates everything.
+All writes are atomic (temp file + fsync + rename). `--home DIR` / `LUNIBOARD_HOME` relocates everything.

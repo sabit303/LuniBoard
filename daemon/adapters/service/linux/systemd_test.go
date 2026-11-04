@@ -9,10 +9,10 @@ import (
 )
 
 func TestUnitContent(t *testing.T) {
-	u := Unit(UnitOptions{Executable: "/home/me/my apps/universal-clipboard", Home: "/tmp/x"})
+	u := Unit(UnitOptions{Executable: "/home/me/my apps/luniboard", Home: "/tmp/x"})
 	for _, want := range []string{
-		`ExecStart="/home/me/my apps/universal-clipboard" daemon`,
-		"Environment=UCLIP_HOME=/tmp/x",
+		`ExecStart="/home/me/my apps/luniboard" daemon`,
+		"Environment=LUNIBOARD_HOME=/tmp/x",
 		"WantedBy=default.target",
 		"Restart=on-failure",
 	} {

@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	adapter "github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/cmdutil"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/synchronization"
+	adapter "github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/cmdutil"
+	"github.com/luniboard/luniboard/daemon/internal/synchronization"
 )
 
 // Observer is the part of the synchronization engine the monitor drives.

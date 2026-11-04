@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "UniversalClipboard"
+rootProject.name = "LuniBoard"
 include(":app")

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.universal-clipboard.org/v1/http-error.schema.json",
+  "$id": "https://schemas.luniboard.org/v1/http-error.schema.json",
   "title": "HTTP error body",
   "type": "object",
   "required": ["error"],

@@ -10,9 +10,9 @@ import (
 
 	"github.com/mdp/qrterminal/v3"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/api"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/pairing"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/api"
+	"github.com/luniboard/luniboard/daemon/internal/pairing"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 func runPair(ctx context.Context, g *globals, args []string) error {
@@ -98,7 +98,7 @@ func pairInteractive(ctx context.Context, g *globals, args []string) error {
 
 	g.printf("Pairing is open until %s.\n\n", inv.ExpiresAt.Local().Format(time.Kitchen))
 	if !*noQR {
-		g.printf("Scan this QR code with the Universal Clipboard app:\n\n")
+		g.printf("Scan this QR code with the LuniBoard app:\n\n")
 		qrterminal.GenerateHalfBlock(inv.URI, qrterminal.L, g.env.Stdout)
 		g.printf("\n")
 	}
@@ -106,7 +106,7 @@ func pairInteractive(ctx context.Context, g *globals, args []string) error {
 	g.printf("  Pairing code:  %s\n", inv.Code)
 	g.printf("  Addresses:     %s\n", strings.Join(inv.Addresses, ", "))
 	g.printf("  Fingerprint:   %s\n", formatFingerprint(inv.Fingerprint))
-	g.printf("To pair another desktop, run on it:\n  universal-clipboard pair connect '%s'\n\n", inv.URI)
+	g.printf("To pair another desktop, run on it:\n  luniboard pair connect '%s'\n\n", inv.URI)
 	g.printf("Waiting for a pairing request (Ctrl+C to cancel)...\n")
 
 	interactive := isTerminal(g.env.Stdin)
@@ -134,7 +134,7 @@ func pairInteractive(ctx context.Context, g *globals, args []string) error {
 			g.printf("Verification code: %s\n", r.VerificationCode)
 			g.printf("Check that the other device shows the same code.\n")
 			if !interactive {
-				g.printf("Approve with: universal-clipboard pair approve %s\n", r.ID)
+				g.printf("Approve with: luniboard pair approve %s\n", r.ID)
 				continue
 			}
 			g.printf("Approve this device? [y/N]: ")
@@ -170,7 +170,7 @@ func pairInteractive(ctx context.Context, g *globals, args []string) error {
 // pairConnect pairs this daemon with another listening device (desktop to desktop).
 func pairConnect(ctx context.Context, g *globals, args []string) error {
 	if len(args) != 1 {
-		return usageError("usage: pair connect '<uclip://pair?... URI shown by the other device>'")
+		return usageError("usage: pair connect '<luniboard://pair?... URI shown by the other device>'")
 	}
 	inv, err := protocol.ParsePairingURI(args[0])
 	if err != nil {

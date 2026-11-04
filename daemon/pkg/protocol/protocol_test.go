@@ -179,7 +179,7 @@ func TestParsePairingURIRejects(t *testing.T) {
 	}.URI()
 	for _, in := range []string{
 		"https://pair?x=1",
-		"uclip://other?v=1",
+		"luniboard://other?v=1",
 		strings.Replace(good, "v=1", "v=9", 1),
 		strings.Replace(good, "fp=", "fp=zz", 1),
 		strings.Replace(good, "addr=10.0.0.1%3A1", "addr=10.0.0.1", 1),

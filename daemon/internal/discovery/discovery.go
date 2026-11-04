@@ -17,7 +17,7 @@ import (
 	"github.com/brutella/dnssd"
 	dnssdlog "github.com/brutella/dnssd/log"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // TXT record keys.
@@ -152,7 +152,7 @@ func (s *Service) startResponder(ctx context.Context, wg *sync.WaitGroup) error 
 		Type:   protocol.ServiceType,
 		Domain: "local",
 		// A dedicated host name avoids clashing with the system's own mDNS responder (Avahi, Bonjour).
-		Host:   "uclip-" + strings.ReplaceAll(self.ID, "-", "")[:12],
+		Host:   "luniboard-" + strings.ReplaceAll(self.ID, "-", "")[:12],
 		Port:   s.opts.Port(),
 		Text:   TXT(self, s.opts.Fingerprint),
 		Ifaces: s.opts.Interfaces,

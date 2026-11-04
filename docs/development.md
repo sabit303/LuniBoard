@@ -5,7 +5,7 @@
 ```
 protocol/            specification, JSON Schemas, example messages
 daemon/              Go module: daemon + CLI
-  cmd/universal-clipboard/   entry point
+  cmd/luniboard/   entry point
   pkg/protocol/              wire types (public)
   internal/…                 core packages (see docs/architecture.md)
   adapters/clipboard/…       OS clipboard adapters (wayland, x11, mock, cmdutil)
@@ -24,7 +24,7 @@ Go ≥ 1.23. Optional for manual testing: `wl-clipboard`, `xclip`.
 ## Common tasks
 
 ```sh
-make build        # bin/universal-clipboard
+make build        # bin/luniboard
 make test         # unit + integration tests with the race detector
 make e2e          # builds the binary and drives two daemons through the CLI
 make vet          # go vet
@@ -35,23 +35,23 @@ Opt-in tests that touch the real system (they overwrite your clipboard / use the
 
 ```sh
 cd daemon
-UCLIP_TEST_REAL_CLIPBOARD=1 go test -run Real ./adapters/...   # wl-clipboard / xclip / xsel
-UCLIP_TEST_MDNS=1 go test -run Live ./internal/discovery/      # multicast DNS on the host
-UCLIP_TEST_LOG=1 go test -v ./tests/integration/               # integration tests with debug logs
+LUNIBOARD_TEST_REAL_CLIPBOARD=1 go test -run Real ./adapters/...   # wl-clipboard / xclip / xsel
+LUNIBOARD_TEST_MDNS=1 go test -run Live ./internal/discovery/      # multicast DNS on the host
+LUNIBOARD_TEST_LOG=1 go test -v ./tests/integration/               # integration tests with debug logs
 ```
 
 ## Running several daemons on one machine
 
-`--home DIR` (or `UCLIP_HOME`) keeps config, identity, socket and logs under one directory:
+`--home DIR` (or `LUNIBOARD_HOME`) keeps config, identity, socket and logs under one directory:
 
 ```sh
 mkdir -p /tmp/a/config /tmp/b/config
 printf '[network]\nport = 47901\n' > /tmp/a/config/config.toml
 printf '[network]\nport = 47902\n[clipboard]\nbackend = "none"\n' > /tmp/b/config/config.toml
-universal-clipboard --home /tmp/a start
-universal-clipboard --home /tmp/b start
-universal-clipboard --home /tmp/a pair            # copy the 'pair connect' line
-universal-clipboard --home /tmp/b pair connect 'uclip://pair?…'
+luniboard --home /tmp/a start
+luniboard --home /tmp/b start
+luniboard --home /tmp/a pair            # copy the 'pair connect' line
+luniboard --home /tmp/b pair connect 'luniboard://pair?…'
 ```
 
 Keep socket paths short (Unix sockets are limited to ~108 bytes).

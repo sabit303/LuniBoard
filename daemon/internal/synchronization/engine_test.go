@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	cb "github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/mock"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/device"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/history"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/logging"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	cb "github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/mock"
+	"github.com/luniboard/luniboard/daemon/internal/device"
+	"github.com/luniboard/luniboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/internal/logging"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // ---- in-memory harness -------------------------------------------------------

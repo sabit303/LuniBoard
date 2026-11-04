@@ -1,4 +1,4 @@
-# Universal Clipboard
+# LuniBoard
 
 Copy on one device, paste on another — directly over your local network. No cloud, no account,
 no relay. Clipboard content travels only between devices you paired, over mutually authenticated TLS.
@@ -30,11 +30,11 @@ no relay. Clipboard content travels only between devices you paired, over mutual
 ```sh
 sudo pacman -S wl-clipboard xclip      # or apt/dnf install wl-clipboard xclip
 make install                           # builds and installs to ~/.local/bin (Go ≥ 1.23)
-universal-clipboard service install    # start now and at login
-universal-clipboard pair               # shows a QR code and pairing code
+luniboard service install    # start now and at login
+luniboard pair               # shows a QR code and pairing code
 ```
 
-Pair a second computer with `universal-clipboard pair connect '<uri shown by the first>'`, approve
+Pair a second computer with `luniboard pair connect '<uri shown by the first>'`, approve
 on the first after comparing the verification code, then copy something. Full instructions:
 [docs/setup.md](docs/setup.md).
 

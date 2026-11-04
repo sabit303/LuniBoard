@@ -1,4 +1,4 @@
-module github.com/universal-clipboard/universal-clipboard/daemon
+module github.com/luniboard/luniboard/daemon
 
 go 1.26.0
 

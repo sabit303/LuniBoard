@@ -1,4 +1,4 @@
-// Package protocol defines the versioned Universal Clipboard wire protocol.
+// Package protocol defines the versioned LuniBoard wire protocol.
 //
 // The authoritative human-readable specification lives in protocol/protocol.md
 // at the repository root; JSON Schemas live in protocol/schemas/v1. Any change
@@ -12,17 +12,17 @@ const (
 	MinSupportedVersion = 1
 
 	// ServiceType is the DNS-SD service type advertised by listening devices.
-	ServiceType = "_uclip._tcp"
+	ServiceType = "_luniboard._tcp"
 
 	// PairingURIScheme is the URI scheme used in pairing QR codes.
-	PairingURIScheme = "uclip"
+	PairingURIScheme = "luniboard"
 
 	// HTTP paths served by a listening device.
 	PathPair      = "/v1/pair"
 	PathWebSocket = "/v1/ws"
 
 	// WebSocketSubprotocol is negotiated on PathWebSocket.
-	WebSocketSubprotocol = "uclip.v1"
+	WebSocketSubprotocol = "luniboard.v1"
 )
 
 // Platform identifies the operating system family of a device.

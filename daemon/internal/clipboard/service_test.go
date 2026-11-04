@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	adapter "github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/mock"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/logging"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/synchronization"
+	adapter "github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/mock"
+	"github.com/luniboard/luniboard/daemon/internal/logging"
+	"github.com/luniboard/luniboard/daemon/internal/synchronization"
 )
 
 func fakeEnv(vars map[string]string, tools []string, sockets []string) Env {

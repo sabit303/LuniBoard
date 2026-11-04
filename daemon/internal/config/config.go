@@ -11,8 +11,8 @@ import (
 
 	"github.com/pelletier/go-toml/v2"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/storage"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/storage"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // DefaultPort is the default TCP port for the LAN listener.
@@ -117,7 +117,7 @@ type LoggingConfig struct {
 func Default() Config {
 	host, _ := os.Hostname()
 	if host == "" {
-		host = "Universal Clipboard device"
+		host = "LuniBoard device"
 	}
 	return Config{
 		Device:    DeviceConfig{Name: truncateRunes(host, protocol.MaxDeviceNameRunes)},
@@ -250,6 +250,6 @@ func WriteDefault(path string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	header := []byte("# Universal Clipboard daemon configuration.\n# See docs/setup.md for every option. Restart the daemon after editing.\n\n")
+	header := []byte("# LuniBoard daemon configuration.\n# See docs/setup.md for every option. Restart the daemon after editing.\n\n")
 	return true, storage.WriteFileAtomic(path, append(header, b...), 0o600)
 }

@@ -8,7 +8,7 @@
         android:shortcutLongLabel="@string/shortcut_send_clipboard_long">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.universalclipboard"
-            android:targetClass="com.universalclipboard.sharing.SendClipboardActivity" />
+            android:targetPackage="com.luniboard"
+            android:targetClass="com.luniboard.sharing.SendClipboardActivity" />
     </shortcut>
 </shortcuts>

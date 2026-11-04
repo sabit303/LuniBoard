@@ -9,9 +9,9 @@ import (
 
 	"github.com/coder/websocket"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/pairing"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/security"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/pairing"
+	"github.com/luniboard/luniboard/daemon/internal/security"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 const maxPairBodyBytes = 16 << 10

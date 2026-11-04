@@ -10,11 +10,11 @@ import (
 )
 
 // AppDirName is the directory name used under the platform's standard locations.
-const AppDirName = "universal-clipboard"
+const AppDirName = "luniboard"
 
 // HomeEnv overrides all locations with a single root directory. It is useful
 // for running several daemons on one machine (tests, development).
-const HomeEnv = "UCLIP_HOME"
+const HomeEnv = "LUNIBOARD_HOME"
 
 // Paths are the on-disk locations used by the daemon.
 type Paths struct {
@@ -63,7 +63,7 @@ func (p Paths) Ensure() error {
 }
 
 // ResolvePaths returns the platform-specific default locations, or locations
-// under home when non-empty (or when UCLIP_HOME is set).
+// under home when non-empty (or when LUNIBOARD_HOME is set).
 func ResolvePaths(home string) (Paths, error) {
 	if home == "" {
 		home = os.Getenv(HomeEnv)
@@ -96,19 +96,19 @@ func ResolvePaths(home string) (Paths, error) {
 		if local == "" {
 			return Paths{}, errors.New("LocalAppData is not set")
 		}
-		base := filepath.Join(local, "UniversalClipboard")
+		base := filepath.Join(local, "LuniBoard")
 		return Paths{
-			ConfigDir:  filepath.Join(cfgBase, "UniversalClipboard"),
+			ConfigDir:  filepath.Join(cfgBase, "LuniBoard"),
 			DataDir:    base,
 			StateDir:   filepath.Join(base, "logs"),
 			RuntimeDir: filepath.Join(base, "run"),
 		}, nil
 	case "darwin":
-		base := filepath.Join(cfgBase, "UniversalClipboard")
+		base := filepath.Join(cfgBase, "LuniBoard")
 		return Paths{
 			ConfigDir:  base,
 			DataDir:    base,
-			StateDir:   filepath.Join(userHome, "Library", "Logs", "UniversalClipboard"),
+			StateDir:   filepath.Join(userHome, "Library", "Logs", "LuniBoard"),
 			RuntimeDir: filepath.Join(base, "run"),
 		}, nil
 	default:

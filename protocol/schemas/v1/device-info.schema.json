@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.universal-clipboard.org/v1/device-info.schema.json",
+  "$id": "https://schemas.luniboard.org/v1/device-info.schema.json",
   "title": "DeviceInfo",
   "type": "object",
   "required": ["id", "name", "platform"],

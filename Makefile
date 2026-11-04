@@ -1,16 +1,16 @@
-# Universal Clipboard — developer entry points.
+# LuniBoard — developer entry points.
 GO      ?= go
-BIN     := bin/universal-clipboard
+BIN     := bin/luniboard
 PREFIX  ?= $(HOME)/.local
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo 0.1.0-dev)
-LDFLAGS := -s -w -X github.com/universal-clipboard/universal-clipboard/daemon/internal/application.Version=$(VERSION)
+LDFLAGS := -s -w -X github.com/luniboard/luniboard/daemon/internal/application.Version=$(VERSION)
 
 .PHONY: all build test test-short e2e vet fmt cross install uninstall clean
 
 all: vet test build
 
 build:
-	cd daemon && CGO_ENABLED=0 $(GO) build -trimpath -ldflags '$(LDFLAGS)' -o ../$(BIN) ./cmd/universal-clipboard
+	cd daemon && CGO_ENABLED=0 $(GO) build -trimpath -ldflags '$(LDFLAGS)' -o ../$(BIN) ./cmd/luniboard
 
 test:
 	cd daemon && $(GO) test -race ./...
@@ -33,16 +33,16 @@ cross:
 		os=$${target%/*}; arch=$${target#*/}; ext=; [ $$os = windows ] && ext=.exe; \
 		echo "building $$os/$$arch"; \
 		(cd daemon && CGO_ENABLED=0 GOOS=$$os GOARCH=$$arch $(GO) build -trimpath -ldflags '$(LDFLAGS)' \
-			-o ../dist/universal-clipboard-$$os-$$arch$$ext ./cmd/universal-clipboard) || exit 1; \
+			-o ../dist/luniboard-$$os-$$arch$$ext ./cmd/luniboard) || exit 1; \
 	done
 
 install: build
-	install -Dm755 $(BIN) $(PREFIX)/bin/universal-clipboard
-	@echo "Installed to $(PREFIX)/bin. Next: universal-clipboard service install"
+	install -Dm755 $(BIN) $(PREFIX)/bin/luniboard
+	@echo "Installed to $(PREFIX)/bin. Next: luniboard service install"
 
 uninstall:
-	-$(PREFIX)/bin/universal-clipboard service uninstall
-	rm -f $(PREFIX)/bin/universal-clipboard
+	-$(PREFIX)/bin/luniboard service uninstall
+	rm -f $(PREFIX)/bin/luniboard
 
 clean:
 	rm -rf bin dist

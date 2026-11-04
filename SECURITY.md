@@ -1,6 +1,6 @@
 # Security policy
 
-Universal Clipboard handles clipboard content, which often includes passwords and other secrets.
+LuniBoard handles clipboard content, which often includes passwords and other secrets.
 We take vulnerabilities seriously.
 
 ## Reporting a vulnerability

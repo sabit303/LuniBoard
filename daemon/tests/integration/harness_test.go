@@ -9,14 +9,14 @@ import (
 	"testing"
 	"time"
 
-	adapter "github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/mock"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/api"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/application"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/config"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/logging"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/transport"
+	adapter "github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/mock"
+	"github.com/luniboard/luniboard/daemon/internal/api"
+	"github.com/luniboard/luniboard/daemon/internal/application"
+	"github.com/luniboard/luniboard/daemon/internal/clipboard"
+	"github.com/luniboard/luniboard/daemon/internal/config"
+	"github.com/luniboard/luniboard/daemon/internal/logging"
+	"github.com/luniboard/luniboard/daemon/internal/transport"
 )
 
 // node is one running daemon.
@@ -35,7 +35,7 @@ type node struct {
 // shortTempDir keeps Unix socket paths below the 108-byte limit.
 func shortTempDir(t *testing.T) string {
 	t.Helper()
-	dir, err := os.MkdirTemp("", "uclip-it-")
+	dir, err := os.MkdirTemp("", "luniboard-it-")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,7 +71,7 @@ func (n *node) start() {
 		t.Fatal(err)
 	}
 	logger := logging.Discard()
-	if os.Getenv("UCLIP_TEST_LOG") == "1" {
+	if os.Getenv("LUNIBOARD_TEST_LOG") == "1" {
 		logger, _, _ = logging.New(logging.Options{Level: "debug", Format: "text", Stderr: os.Stderr})
 		logger = logger.With("node", n.name)
 	}

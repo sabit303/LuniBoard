@@ -91,7 +91,7 @@ func VerificationCode(fingerprintA, fingerprintB string) string {
 	if b < a {
 		a, b = b, a
 	}
-	sum := sha256.Sum256([]byte("uclip-sas-v1:" + a + ":" + b))
+	sum := sha256.Sum256([]byte("luniboard-sas-v1:" + a + ":" + b))
 	n := binary.BigEndian.Uint32(sum[:4]) % 1_000_000
 	s := fmt.Sprintf("%06d", n)
 	return s[:3] + " " + s[3:]
@@ -140,7 +140,7 @@ type PairingInvitation struct {
 	Code      string
 }
 
-// URI encodes the invitation as uclip://pair?...
+// URI encodes the invitation as luniboard://pair?...
 func (p PairingInvitation) URI() string {
 	q := url.Values{}
 	q.Set("v", strconv.Itoa(Version))
@@ -159,7 +159,7 @@ func (p PairingInvitation) URI() string {
 func ParsePairingURI(s string) (PairingInvitation, error) {
 	u, err := url.Parse(strings.TrimSpace(s))
 	if err != nil || u.Scheme != PairingURIScheme || u.Host != "pair" {
-		return PairingInvitation{}, errors.New("not a uclip://pair URI")
+		return PairingInvitation{}, errors.New("not a luniboard://pair URI")
 	}
 	q := u.Query()
 	v, err := strconv.Atoi(q.Get("v"))

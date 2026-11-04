@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.universal-clipboard.org/v1/common.schema.json",
+  "$id": "https://schemas.luniboard.org/v1/common.schema.json",
   "title": "Common definitions",
   "$defs": {
     "id": { "type": "string", "pattern": "^[A-Za-z0-9._-]{1,64}$" },

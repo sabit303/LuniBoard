@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.universal-clipboard.org/v1/hello.schema.json",
+  "$id": "https://schemas.luniboard.org/v1/hello.schema.json",
   "title": "Hello",
   "type": "object",
   "required": ["device", "min_protocol_version", "max_protocol_version", "time", "max_payload_bytes"],

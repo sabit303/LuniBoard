@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 	"runtime"
 
-	adapter "github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/cmdutil"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/wayland"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/x11"
+	adapter "github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/cmdutil"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/wayland"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/x11"
 )
 
 // Backend is a detected clipboard integration.

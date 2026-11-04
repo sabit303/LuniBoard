@@ -1,4 +1,4 @@
-// Package cli implements the universal-clipboard command-line interface. Every
+// Package cli implements the luniboard command-line interface. Every
 // command other than "daemon" is a thin client of the local API.
 package cli
 
@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/api"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/config"
+	"github.com/luniboard/luniboard/daemon/internal/api"
+	"github.com/luniboard/luniboard/daemon/internal/config"
 )
 
 // Env carries process-wide inputs so commands are testable.
@@ -69,8 +69,8 @@ func commands() []command {
 }
 
 func usage(w io.Writer) {
-	fmt.Fprintf(w, "Universal Clipboard — LAN clipboard synchronization\n\n")
-	fmt.Fprintf(w, "Usage: universal-clipboard [--home DIR] [--json] <command> [arguments]\n\nCommands:\n")
+	fmt.Fprintf(w, "LuniBoard — LAN clipboard synchronization\n\n")
+	fmt.Fprintf(w, "Usage: luniboard [--home DIR] [--json] <command> [arguments]\n\nCommands:\n")
 	for _, c := range commands() {
 		fmt.Fprintf(w, "  %-10s %s\n", c.name, c.summary)
 	}
@@ -80,7 +80,7 @@ func usage(w io.Writer) {
 // Main runs the CLI and returns the process exit code.
 func Main(ctx context.Context, args []string, env Env) int {
 	g := &globals{env: env}
-	fs := flag.NewFlagSet("universal-clipboard", flag.ContinueOnError)
+	fs := flag.NewFlagSet("luniboard", flag.ContinueOnError)
 	fs.SetOutput(env.Stderr)
 	fs.StringVar(&g.home, "home", "", "state directory")
 	fs.BoolVar(&g.json, "json", false, "JSON output")
@@ -111,7 +111,7 @@ func Main(ctx context.Context, args []string, env Env) int {
 					return 2
 				}
 				if errors.Is(err, api.ErrDaemonNotRunning) {
-					fmt.Fprintln(env.Stderr, "error: the daemon is not running (start it with 'universal-clipboard start')")
+					fmt.Fprintln(env.Stderr, "error: the daemon is not running (start it with 'luniboard start')")
 					return 1
 				}
 				fmt.Fprintln(env.Stderr, "error:", err)
@@ -176,7 +176,7 @@ func resolveDevice(ctx context.Context, c *api.Client, ref string) (api.DeviceVi
 	case 1:
 		return matches[0], nil
 	case 0:
-		return api.DeviceView{}, fmt.Errorf("no paired device matches %q (see 'universal-clipboard devices')", ref)
+		return api.DeviceView{}, fmt.Errorf("no paired device matches %q (see 'luniboard devices')", ref)
 	default:
 		return api.DeviceView{}, fmt.Errorf("%q matches %d devices; use the device ID", ref, len(matches))
 	}

@@ -6,7 +6,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard"
 )
 
 // Clipboard is an in-memory clipboard with change notifications.

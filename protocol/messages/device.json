@@ -5,7 +5,7 @@
     "platform": "linux",
     "app_version": "0.1.0"
   },
-  "pairing_uri": "uclip://pair?addr=192.168.1.20%3A47823&code=K7M2-Q9XR&fp=2d48c817ebaf470777dc96bd106b2f6951a1d587df02cb1da1754a29a1130790&id=a41e7c09-5d2b-4f86-b3a1-9c0e8d7f6b52&name=arch-desktop&os=linux&v=1",
+  "pairing_uri": "luniboard://pair?addr=192.168.1.20%3A47823&code=K7M2-Q9XR&fp=2d48c817ebaf470777dc96bd106b2f6951a1d587df02cb1da1754a29a1130790&id=a41e7c09-5d2b-4f86-b3a1-9c0e8d7f6b52&name=arch-desktop&os=linux&v=1",
   "dns_sd_txt": {
     "id": "a41e7c09-5d2b-4f86-b3a1-9c0e8d7f6b52",
     "v": "1",

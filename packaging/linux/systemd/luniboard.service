@@ -1,0 +1,19 @@
+# systemd user unit for distribution packages (binary in /usr/bin).
+# Users enable it with: systemctl --user enable --now luniboard.service
+# For a ~/.local installation use `luniboard service install` instead,
+# which generates an equivalent unit pointing at the installed binary.
+[Unit]
+Description=LuniBoard daemon (LAN clipboard synchronization)
+Documentation=https://github.com/luniboard/luniboard
+After=network-online.target graphical-session.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/luniboard daemon
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target

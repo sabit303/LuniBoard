@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.universalclipboard"
+    namespace = "com.luniboard"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.universalclipboard"
+        applicationId = "com.luniboard"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
@@ -37,8 +37,8 @@ android {
     testOptions {
         unitTests.all {
             // Interop tests start the Go daemon; pass its location through.
-            it.systemProperty("uclip.repoRoot", rootProject.projectDir.parentFile.absolutePath)
-            System.getenv("UCLIP_DAEMON_BIN")?.let { bin -> it.systemProperty("uclip.daemonBin", bin) }
+            it.systemProperty("luniboard.repoRoot", rootProject.projectDir.parentFile.absolutePath)
+            System.getenv("LUNIBOARD_DAEMON_BIN")?.let { bin -> it.systemProperty("luniboard.daemonBin", bin) }
             it.testLogging { events("failed"); exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL }
         }
     }

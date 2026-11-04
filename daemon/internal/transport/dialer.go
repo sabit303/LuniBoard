@@ -11,9 +11,9 @@ import (
 
 	"github.com/coder/websocket"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/device"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/security"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/device"
+	"github.com/luniboard/luniboard/daemon/internal/security"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 type backoffState struct {

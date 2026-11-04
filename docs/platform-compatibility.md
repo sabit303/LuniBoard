@@ -17,7 +17,7 @@ on that platform**, and **not implemented**. It is updated with every phase.
 | Windows | — | — | **Not implemented** (Phase 6). The daemon compiles and runs headless. |
 | macOS | — | — | **Not implemented** (Phase 6). The daemon compiles and runs headless. |
 
-Service integration: systemd user service (`universal-clipboard service install`) — implemented;
+Service integration: systemd user service (`luniboard service install`) — implemented;
 the generated unit passes `systemd-analyze --user verify` in the test suite, but `service install`
 itself has not yet been exercised on a real login session. Windows startup and macOS LaunchAgent
 are Phase 6.

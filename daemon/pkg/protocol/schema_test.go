@@ -15,7 +15,7 @@ import (
 // the examples in protocol/messages in sync. Other clients (Android, iOS)
 // implement against the schemas.
 
-const schemaBase = "https://schemas.universal-clipboard.org/v1/"
+const schemaBase = "https://schemas.luniboard.org/v1/"
 
 func repoPath(parts ...string) string {
 	return filepath.Join(append([]string{"..", "..", ".."}, parts...)...)

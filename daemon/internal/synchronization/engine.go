@@ -16,9 +16,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/device"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/history"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/device"
+	"github.com/luniboard/luniboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // Clipboard writes text to the local system clipboard.
@@ -425,9 +425,7 @@ func (e *Engine) broadcast(ev protocol.ClipboardEvent, exclude []string) {
 		}
 		if out, ok := e.sendTo(id, connected, ev, msg); !ok {
 			e.log.Debug("event not sent", "event_id", ev.EventID, "device_id", id, "status", out.Status)
-			continue
 		}
-		e.markDelivered(ev.EventID, id)
 	}
 }
 
@@ -566,6 +564,9 @@ func (e *Engine) HandleAck(fromPeer string, a protocol.Ack) {
 		return
 	}
 	e.hist.UpdateDelivery(a.EventID, fromPeer, history.DeliveryStatus(a.Status))
+	// Only an acknowledgement proves the peer has the event: a send can
+	// "succeed" on a connection that is already closing.
+	e.markDelivered(a.EventID, fromPeer)
 	e.mu.Lock()
 	defer e.mu.Unlock()
 	if w, ok := e.waiters[a.EventID]; ok && w.pending[fromPeer] {
@@ -607,7 +608,6 @@ func (e *Engine) OnPeerConnected(peerID string) {
 		return
 	}
 	if _, ok := e.sendTo(peerID, connected, evCopy, msg); ok {
-		e.markDelivered(evCopy.EventID, peerID)
 		e.log.Debug("sent latest clipboard event to reconnected peer", "device_id", peerID, "event_id", evCopy.EventID)
 	}
 }

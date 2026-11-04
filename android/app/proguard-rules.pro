@@ -1,10 +1,10 @@
 # kotlinx.serialization: keep generated serializers of protocol and storage models.
 -keepattributes *Annotation*, InnerClasses
--keep,includedescriptorclasses class com.universalclipboard.**$$serializer { *; }
--keepclassmembers class com.universalclipboard.** {
+-keep,includedescriptorclasses class com.luniboard.**$$serializer { *; }
+-keepclassmembers class com.luniboard.** {
     *** Companion;
 }
--keepclasseswithmembers class com.universalclipboard.** {
+-keepclasseswithmembers class com.luniboard.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 # OkHttp optional platform integrations

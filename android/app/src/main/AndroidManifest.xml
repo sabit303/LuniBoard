@@ -17,13 +17,13 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
-        android:name=".UniversalClipboardApp"
+        android:name=".LuniBoardApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.UniversalClipboard"
+        android:theme="@style/Theme.LuniBoard"
         tools:targetApi="37">
 
         <activity
@@ -40,7 +40,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="uclip" android:host="pair" />
+                <data android:scheme="luniboard" android:host="pair" />
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
@@ -52,7 +52,7 @@
             android:label="@string/share_label"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.UniversalClipboard.Translucent">
+            android:theme="@style/Theme.LuniBoard.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -72,7 +72,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.UniversalClipboard.Translucent" />
+            android:theme="@style/Theme.LuniBoard.Translucent" />
 
         <service
             android:name=".service.SyncService"

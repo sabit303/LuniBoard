@@ -13,9 +13,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/history"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/pairing"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/synchronization"
+	"github.com/luniboard/luniboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/internal/pairing"
+	"github.com/luniboard/luniboard/daemon/internal/synchronization"
 )
 
 // Backend is implemented by the application.

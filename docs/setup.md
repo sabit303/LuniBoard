@@ -25,13 +25,13 @@ Installing both is harmless; the daemon detects the session type.
 Requires Go ≥ 1.23.
 
 ```sh
-make build                     # -> bin/universal-clipboard
+make build                     # -> bin/luniboard
 make install                   # copies to ~/.local/bin (PREFIX=… to change)
-universal-clipboard service install   # systemd user service, enabled and started
+luniboard service install   # systemd user service, enabled and started
 ```
 
-Without systemd, run `universal-clipboard start` from your session's autostart, or
-`universal-clipboard daemon` in the foreground.
+Without systemd, run `luniboard start` from your session's autostart, or
+`luniboard daemon` in the foreground.
 
 ### Session environment for systemd services
 
@@ -44,7 +44,7 @@ these to systemd automatically. If you use a window manager that does not (Sway,
   Sway `exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY`.
 * X11: add `systemctl --user import-environment DISPLAY XAUTHORITY` to `~/.xinitrc` / i3 config.
 
-`universal-clipboard status` shows the detected backend; it keeps retrying every 10 s until a
+`luniboard status` shows the detected backend; it keeps retrying every 10 s until a
 session appears, so starting before the graphical session is fine.
 
 ## 3. Firewall
@@ -60,7 +60,7 @@ sudo firewall-cmd --add-port=47823/tcp --add-service=mdns --permanent && sudo fi
 ## 4. Pair devices
 
 ```sh
-universal-clipboard pair
+luniboard pair
 ```
 
 prints a QR code, a pairing code and the addresses, then waits. On the other device scan the QR
@@ -70,32 +70,32 @@ Pair two computers:
 
 ```sh
 # computer A
-universal-clipboard pair            # shows: universal-clipboard pair connect 'uclip://pair?…'
+luniboard pair            # shows: luniboard pair connect 'luniboard://pair?…'
 # computer B
-universal-clipboard pair connect 'uclip://pair?…'
+luniboard pair connect 'luniboard://pair?…'
 # approve on A after comparing the verification codes
 ```
 
 ## 5. Everyday use
 
 ```sh
-universal-clipboard status                 # health, backend, counters
-universal-clipboard devices                # paired devices and connection state
-universal-clipboard devices set pixel --send off   # stop pushing to a device
-universal-clipboard send "text"            # manual send (also: echo text | universal-clipboard send)
-universal-clipboard send --to laptop "x"   # selective send
-universal-clipboard history [-n 20] [--full] | history clear
-universal-clipboard pause | resume
-universal-clipboard unpair <device>        # revoke
-universal-clipboard logs [-f]
-universal-clipboard stop | start
+luniboard status                 # health, backend, counters
+luniboard devices                # paired devices and connection state
+luniboard devices set pixel --send off   # stop pushing to a device
+luniboard send "text"            # manual send (also: echo text | luniboard send)
+luniboard send --to laptop "x"   # selective send
+luniboard history [-n 20] [--full] | history clear
+luniboard pause | resume
+luniboard unpair <device>        # revoke
+luniboard logs [-f]
+luniboard stop | start
 ```
 
 All commands accept `--json`.
 
 ## 6. Configuration
 
-`universal-clipboard config init` writes the defaults to `~/.config/universal-clipboard/config.toml`;
+`luniboard config init` writes the defaults to `~/.config/luniboard/config.toml`;
 `config show` prints the effective configuration. Unknown keys are rejected. Restart the daemon
 after editing.
 
@@ -130,7 +130,7 @@ after editing.
 ## Uninstall
 
 ```sh
-universal-clipboard service uninstall
-rm ~/.local/bin/universal-clipboard
-rm -r ~/.config/universal-clipboard ~/.local/share/universal-clipboard ~/.local/state/universal-clipboard
+luniboard service uninstall
+rm ~/.local/bin/luniboard
+rm -r ~/.config/luniboard ~/.local/share/luniboard ~/.local/state/luniboard
 ```

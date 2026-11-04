@@ -16,8 +16,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/storage"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/storage"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // Identity is this device's long-lived cryptographic identity. The SHA-256
@@ -85,13 +85,13 @@ func createIdentity(dir string) (*Identity, error) {
 	now := time.Now()
 	tmpl := &x509.Certificate{
 		SerialNumber:          serial,
-		Subject:               pkix.Name{CommonName: deviceID, Organization: []string{"Universal Clipboard"}},
+		Subject:               pkix.Name{CommonName: deviceID, Organization: []string{"LuniBoard"}},
 		NotBefore:             now.Add(-time.Hour),
 		NotAfter:              now.AddDate(30, 0, 0),
 		KeyUsage:              x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth, x509.ExtKeyUsageClientAuth},
 		BasicConstraintsValid: true,
-		DNSNames:              []string{"universal-clipboard"},
+		DNSNames:              []string{"luniboard"},
 	}
 	der, err := x509.CreateCertificate(rand.Reader, tmpl, tmpl, &key.PublicKey, key)
 	if err != nil {

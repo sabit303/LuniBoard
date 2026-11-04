@@ -1,4 +1,4 @@
-# Universal Clipboard daemon configuration.
+# LuniBoard daemon configuration.
 # See docs/setup.md for every option. Restart the daemon after editing.
 
 [device]

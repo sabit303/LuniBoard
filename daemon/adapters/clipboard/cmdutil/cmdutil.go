@@ -74,7 +74,7 @@ func (r ExecRunner) Output(ctx context.Context, maxBytes int64, name string, arg
 // Stdout goes to /dev/null and stderr to a temporary file: if either were a
 // pipe, Wait would block until the forked selection owner exits.
 func (r ExecRunner) Input(ctx context.Context, stdin []byte, name string, args ...string) error {
-	errFile, err := os.CreateTemp("", "uclip-stderr-*")
+	errFile, err := os.CreateTemp("", "luniboard-stderr-*")
 	if err != nil {
 		return err
 	}

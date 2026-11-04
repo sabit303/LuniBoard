@@ -6,12 +6,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/api"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/application"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/config"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/history"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/logging"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/api"
+	"github.com/luniboard/luniboard/daemon/internal/application"
+	"github.com/luniboard/luniboard/daemon/internal/config"
+	"github.com/luniboard/luniboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/internal/logging"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 func TestDesktopPairingAndBidirectionalSync(t *testing.T) {

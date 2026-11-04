@@ -1,6 +1,6 @@
 //go:build e2e
 
-// Package e2e drives the real universal-clipboard binary through its CLI:
+// Package e2e drives the real luniboard binary through its CLI:
 // two daemons are started, paired desktop-to-desktop and exchange text.
 // Run with: go test -tags e2e ./tests/e2e/
 package e2e
@@ -20,12 +20,12 @@ import (
 var binary string
 
 func TestMain(m *testing.M) {
-	dir, err := os.MkdirTemp("", "uclip-e2e-bin-")
+	dir, err := os.MkdirTemp("", "luniboard-e2e-bin-")
 	if err != nil {
 		panic(err)
 	}
-	binary = filepath.Join(dir, "universal-clipboard")
-	build := exec.Command("go", "build", "-o", binary, "../../cmd/universal-clipboard")
+	binary = filepath.Join(dir, "luniboard")
+	build := exec.Command("go", "build", "-o", binary, "../../cmd/luniboard")
 	build.Stdout, build.Stderr = os.Stdout, os.Stderr
 	if err := build.Run(); err != nil {
 		panic(err)
@@ -41,7 +41,7 @@ type instance struct {
 }
 
 func newInstance(t *testing.T, name string) *instance {
-	home, err := os.MkdirTemp("", "uclip-e2e-")
+	home, err := os.MkdirTemp("", "luniboard-e2e-")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestCLIPairSendHistory(t *testing.T) {
 		Code string `json:"code"`
 	}
 	a.jsonOut(&inv, "pair")
-	if !strings.HasPrefix(inv.URI, "uclip://pair?") {
+	if !strings.HasPrefix(inv.URI, "luniboard://pair?") {
 		t.Fatalf("unexpected invitation %+v", inv)
 	}
 

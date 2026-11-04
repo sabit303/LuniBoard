@@ -11,9 +11,9 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/api"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/config"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/internal/api"
+	"github.com/luniboard/luniboard/daemon/internal/config"
+	"github.com/luniboard/luniboard/daemon/internal/history"
 )
 
 func runStatus(ctx context.Context, g *globals, args []string) error {
@@ -66,7 +66,7 @@ func runDevices(ctx context.Context, g *globals, args []string) error {
 		return g.printJSON(list)
 	}
 	if len(list) == 0 {
-		g.printf("No paired devices. Run 'universal-clipboard pair' to add one.\n")
+		g.printf("No paired devices. Run 'luniboard pair' to add one.\n")
 		return nil
 	}
 	tw := tabwriter.NewWriter(g.env.Stdout, 0, 0, 2, ' ', 0)
@@ -367,7 +367,7 @@ func runLogs(ctx context.Context, g *globals, args []string) error {
 	f, err := os.Open(path)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return fmt.Errorf("no log file at %s (file logging disabled? try: journalctl --user -u universal-clipboard)", path)
+			return fmt.Errorf("no log file at %s (file logging disabled? try: journalctl --user -u luniboard)", path)
 		}
 		return err
 	}

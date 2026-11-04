@@ -14,17 +14,17 @@ import (
 	"sync"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/api"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/config"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/device"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/discovery"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/history"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/pairing"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/security"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/synchronization"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/transport"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/api"
+	"github.com/luniboard/luniboard/daemon/internal/clipboard"
+	"github.com/luniboard/luniboard/daemon/internal/config"
+	"github.com/luniboard/luniboard/daemon/internal/device"
+	"github.com/luniboard/luniboard/daemon/internal/discovery"
+	"github.com/luniboard/luniboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/internal/pairing"
+	"github.com/luniboard/luniboard/daemon/internal/security"
+	"github.com/luniboard/luniboard/daemon/internal/synchronization"
+	"github.com/luniboard/luniboard/daemon/internal/transport"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // Version is the application version, overridable at build time with

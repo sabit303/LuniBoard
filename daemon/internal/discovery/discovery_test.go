@@ -9,8 +9,8 @@ import (
 
 	"github.com/brutella/dnssd"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/logging"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/logging"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 var testFP = protocol.CertificateFingerprint([]byte("x"))
@@ -64,8 +64,8 @@ func TestParseEntryRejects(t *testing.T) {
 
 // TestLiveAdvertiseAndBrowse uses real multicast on the host network.
 func TestLiveAdvertiseAndBrowse(t *testing.T) {
-	if os.Getenv("UCLIP_TEST_MDNS") != "1" {
-		t.Skip("set UCLIP_TEST_MDNS=1 to run against the real network")
+	if os.Getenv("LUNIBOARD_TEST_MDNS") != "1" {
+		t.Skip("set LUNIBOARD_TEST_MDNS=1 to run against the real network")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()

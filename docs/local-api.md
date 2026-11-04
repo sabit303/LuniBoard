@@ -2,8 +2,8 @@
 
 The daemon exposes a JSON-over-HTTP control API on a Unix domain socket:
 
-* Linux: `$XDG_RUNTIME_DIR/universal-clipboard/daemon.sock` (fallback `/tmp/universal-clipboard-<uid>/`)
-* With `--home DIR` / `UCLIP_HOME`: `DIR/run/daemon.sock`
+* Linux: `$XDG_RUNTIME_DIR/luniboard/daemon.sock` (fallback `/tmp/luniboard-<uid>/`)
+* With `--home DIR` / `LUNIBOARD_HOME`: `DIR/run/daemon.sock`
 
 The socket is mode 0600 in a 0700 directory and, on Linux, connections from other UIDs are rejected
 (`SO_PEERCRED`). There is no network-reachable control API. The CLI uses this API exclusively, and
@@ -12,7 +12,7 @@ a desktop GUI must do the same — it must not reimplement synchronization logic
 Example:
 
 ```sh
-curl --unix-socket "$XDG_RUNTIME_DIR/universal-clipboard/daemon.sock" http://daemon/v1/status
+curl --unix-socket "$XDG_RUNTIME_DIR/luniboard/daemon.sock" http://daemon/v1/status
 ```
 
 Errors: non-2xx status with `{"error":"message"}` (`400` invalid input, `404` unknown device or
@@ -30,7 +30,7 @@ request, `409` the remote device refused pairing, `500` otherwise).
 | `DELETE /v1/pairing` | — | close the window |
 | `POST /v1/pairing/requests/{id}/approve` | — | approve a pending request |
 | `POST /v1/pairing/requests/{id}/reject` | — | reject it |
-| `POST /v1/pairing/connect` | `{"uri":"uclip://pair?…"}` | pair this daemon with another listening device; blocks until the other side decides: `{status, verification_code, device?}` |
+| `POST /v1/pairing/connect` | `{"uri":"luniboard://pair?…"}` | pair this daemon with another listening device; blocks until the other side decides: `{status, verification_code, device?}` |
 | `GET /v1/history?limit=N` | — | history entries, newest first, with per-device delivery status |
 | `DELETE /v1/history` | — | clear history (memory and disk) |
 | `POST /v1/sync/pause` / `POST /v1/sync/resume` | — | toggle automatic synchronization |

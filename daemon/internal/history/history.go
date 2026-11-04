@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/storage"
-	"github.com/universal-clipboard/universal-clipboard/daemon/pkg/protocol"
+	"github.com/luniboard/luniboard/daemon/internal/storage"
+	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
 // Direction tells whether an entry was produced locally or received from a peer.

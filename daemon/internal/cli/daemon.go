@@ -12,16 +12,23 @@ import (
 	"syscall"
 	"time"
 
-	servicelinux "github.com/universal-clipboard/universal-clipboard/daemon/adapters/service/linux"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/application"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/config"
-	"github.com/universal-clipboard/universal-clipboard/daemon/internal/logging"
+	servicelinux "github.com/luniboard/luniboard/daemon/adapters/service/linux"
+	"github.com/luniboard/luniboard/daemon/internal/application"
+	"github.com/luniboard/luniboard/daemon/internal/config"
+	"github.com/luniboard/luniboard/daemon/internal/logging"
 )
 
 func runDaemon(ctx context.Context, g *globals, args []string) error {
 	fs := newFlags("daemon", g)
 	if err := fs.Parse(args); err != nil {
 		return usageError(err.Error())
+	}
+	var migrated []string
+	if g.home == "" && os.Getenv(config.HomeEnv) == "" {
+		var err error
+		if migrated, err = config.MigrateLegacyDirs(g.paths); err != nil {
+			fmt.Fprintln(g.env.Stderr, "warning: migrating old universal-clipboard directories:", err)
+		}
 	}
 	cfg, err := config.Load(g.paths.ConfigFile())
 	if err != nil {
@@ -41,6 +48,9 @@ func runDaemon(ctx context.Context, g *globals, args []string) error {
 		return err
 	}
 	defer closer.Close()
+	for _, m := range migrated {
+		logger.Info("migrated data from the old universal-clipboard location", "move", m)
+	}
 
 	app, err := application.New(application.Options{Paths: g.paths, Config: cfg, Logger: logger})
 	if err != nil {
@@ -93,7 +103,7 @@ func runStart(ctx context.Context, g *globals, args []string) error {
 		}
 		time.Sleep(100 * time.Millisecond)
 	}
-	return fmt.Errorf("daemon did not become ready; see 'universal-clipboard logs'")
+	return fmt.Errorf("daemon did not become ready; see 'luniboard logs'")
 }
 
 func runStop(ctx context.Context, g *globals, args []string) error {
@@ -166,6 +176,6 @@ func runService(ctx context.Context, g *globals, args []string) error {
 }
 
 func runVersion(ctx context.Context, g *globals, args []string) error {
-	g.printf("universal-clipboard %s (%s/%s, %s)\n", application.Version, runtime.GOOS, runtime.GOARCH, runtime.Version())
+	g.printf("luniboard %s (%s/%s, %s)\n", application.Version, runtime.GOOS, runtime.GOARCH, runtime.Version())
 	return nil
 }

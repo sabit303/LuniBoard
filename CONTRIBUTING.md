@@ -26,5 +26,5 @@ Thanks for helping! Please read [docs/architecture.md](docs/architecture.md) and
 ## Testing on real desktops
 
 Platform reports are very welcome. Run the opt-in real-clipboard tests
-(`UCLIP_TEST_REAL_CLIPBOARD=1 go test -run Real ./adapters/...`) and a two-device manual test, then
+(`LUNIBOARD_TEST_REAL_CLIPBOARD=1 go test -run Real ./adapters/...`) and a two-device manual test, then
 report distribution, desktop environment, session type and results in an issue or PR.

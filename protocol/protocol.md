@@ -1,4 +1,4 @@
-# Universal Clipboard Protocol — version 1
+# LuniBoard Protocol — version 1
 
 Status: **implemented** by the Go daemon (`daemon/pkg/protocol`, `daemon/internal/transport`,
 `daemon/internal/pairing`, `daemon/internal/synchronization`). Machine-readable schemas live in
@@ -31,7 +31,7 @@ The fingerprint is the identity that peers pin. Regenerating the certificate req
 
 ## 3. Discovery (DNS-SD / mDNS)
 
-Listening devices advertise service type `_uclip._tcp` in domain `local.` with TXT keys:
+Listening devices advertise service type `_luniboard._tcp` in domain `local.` with TXT keys:
 
 | key    | value                                   |
 |--------|-----------------------------------------|
@@ -73,7 +73,7 @@ Errors use HTTP status codes with a JSON body `{"error":{"code":"…","message":
 2. The device shows an **invitation URI**, as text and as a QR code:
 
    ```
-   uclip://pair?v=1&id=<device_id>&name=<name>&os=<platform>&fp=<fingerprint>&addr=<host:port>[&addr=…]&code=<code>
+   luniboard://pair?v=1&id=<device_id>&name=<name>&os=<platform>&fp=<fingerprint>&addr=<host:port>[&addr=…]&code=<code>
    ```
 
    All values are URL-encoded; `addr` repeats (1–16 entries, IPv6 as `[addr]:port`).
@@ -93,7 +93,7 @@ Errors use HTTP status codes with a JSON body `{"error":{"code":"…","message":
 5. Both devices display the **verification code** (SAS) and the user confirms they match:
 
    ```
-   n   = first 4 bytes (big-endian uint32) of SHA-256("uclip-sas-v1:" + min(fpA,fpB) + ":" + max(fpA,fpB)) mod 1,000,000
+   n   = first 4 bytes (big-endian uint32) of SHA-256("luniboard-sas-v1:" + min(fpA,fpB) + ":" + max(fpA,fpB)) mod 1,000,000
    SAS = n as 6 decimal digits, shown as "123 456"
    ```
 
@@ -112,7 +112,7 @@ fingerprint and closes any open session; the peer's next connection receives `40
 
 ### 6.1 Establishment
 
-The client opens `wss://host:port/v1/ws` with WebSocket subprotocol **`uclip.v1`** (required).
+The client opens `wss://host:port/v1/ws` with WebSocket subprotocol **`luniboard.v1`** (required).
 Each side immediately sends a `hello` envelope and reads the peer's `hello` within 10 s.
 
 All WebSocket messages are UTF-8 JSON text frames wrapped in an

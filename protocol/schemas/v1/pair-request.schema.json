@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.universal-clipboard.org/v1/pair-request.schema.json",
+  "$id": "https://schemas.luniboard.org/v1/pair-request.schema.json",
   "title": "PairRequest (POST /v1/pair body)",
   "type": "object",
   "required": ["protocol_version", "device", "code", "listen_port"],

@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/cmdutil"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/cmdutil"
 )
 
 func TestXClipRead(t *testing.T) {
@@ -50,8 +50,8 @@ func TestXSelWrite(t *testing.T) {
 // TestRealX11Clipboard exercises xclip against a live X server (or XWayland).
 // It overwrites the clipboard, so it only runs when explicitly enabled.
 func TestRealX11Clipboard(t *testing.T) {
-	if os.Getenv("UCLIP_TEST_REAL_CLIPBOARD") != "1" || os.Getenv("DISPLAY") == "" {
-		t.Skip("set UCLIP_TEST_REAL_CLIPBOARD=1 with DISPLAY to run")
+	if os.Getenv("LUNIBOARD_TEST_REAL_CLIPBOARD") != "1" || os.Getenv("DISPLAY") == "" {
+		t.Skip("set LUNIBOARD_TEST_REAL_CLIPBOARD=1 with DISPLAY to run")
 	}
 	for _, tool := range []Tool{XClip, XSel} {
 		t.Run(string(tool), func(t *testing.T) {
@@ -59,7 +59,7 @@ func TestRealX11Clipboard(t *testing.T) {
 				t.Skip(string(tool) + " not installed")
 			}
 			a := New(cmdutil.ExecRunner{}, tool, 1<<20)
-			want := "universal-clipboard x11 test ✓ " + string(tool)
+			want := "luniboard x11 test ✓ " + string(tool)
 			if err := a.WriteText(context.Background(), want); err != nil {
 				t.Fatal(err)
 			}

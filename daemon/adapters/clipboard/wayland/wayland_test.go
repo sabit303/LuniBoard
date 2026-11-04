@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard"
-	"github.com/universal-clipboard/universal-clipboard/daemon/adapters/clipboard/cmdutil"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard"
+	"github.com/luniboard/luniboard/daemon/adapters/clipboard/cmdutil"
 )
 
 func TestReadTextPicksUTF8AndDetectsSecrets(t *testing.T) {
@@ -81,8 +81,8 @@ func TestWatchNotifies(t *testing.T) {
 // TestRealWaylandClipboard exercises wl-clipboard against the live session.
 // It overwrites the user's clipboard, so it only runs when explicitly enabled.
 func TestRealWaylandClipboard(t *testing.T) {
-	if os.Getenv("UCLIP_TEST_REAL_CLIPBOARD") != "1" || os.Getenv("WAYLAND_DISPLAY") == "" {
-		t.Skip("set UCLIP_TEST_REAL_CLIPBOARD=1 in a Wayland session to run")
+	if os.Getenv("LUNIBOARD_TEST_REAL_CLIPBOARD") != "1" || os.Getenv("WAYLAND_DISPLAY") == "" {
+		t.Skip("set LUNIBOARD_TEST_REAL_CLIPBOARD=1 in a Wayland session to run")
 	}
 	for _, tool := range Tools {
 		if _, err := exec.LookPath(tool); err != nil {
@@ -90,7 +90,7 @@ func TestRealWaylandClipboard(t *testing.T) {
 		}
 	}
 	a := New(cmdutil.ExecRunner{}, 1<<20)
-	want := "universal-clipboard wayland test ✓\nsecond line"
+	want := "luniboard wayland test ✓\nsecond line"
 	if err := a.WriteText(context.Background(), want); err != nil {
 		t.Fatal(err)
 	}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Universal Clipboard</string>
+    <string name="app_name">LuniBoard</string>
     <string name="share_label">Send to computer</string>
     <string name="shortcut_send_clipboard_long">Send clipboard to computers</string>
 
@@ -20,7 +20,6 @@
     <string name="action_copy">Copy</string>
     <string name="action_delete">Delete</string>
     <string name="action_done">Done</string>
-    <string name="action_enable_sync">Turn on synchronization</string>
     <string name="action_pair">Pair</string>
     <string name="action_pair_computer">Pair a computer</string>
     <string name="action_paste">Paste</string>
@@ -34,22 +33,16 @@
     <string name="copied">Copied</string>
 
     <!-- Home -->
-    <string name="home_text_label">Text or link</string>
-    <string name="home_text_placeholder">Type, paste, or share something to this app</string>
-    <string name="home_android_hint">Android does not let apps read the clipboard in the background, so copying on this phone is not sent automatically. Use Share → Universal Clipboard, the Paste button here, or the “Send clipboard” shortcut. Content copied on your computers arrives here while the app is open, or always if “Background connection” is on.</string>
+    <string name="status_line_connected">Connected to %1$s</string>
+    <string name="status_line_offline">Not connected</string>
+    <string name="status_line_no_devices">No computer paired</string>
+    <string name="status_line_sync_off">Sync is off</string>
+    <string name="action_turn_on">Turn on</string>
+    <string name="home_text_placeholder">Type or paste text to send</string>
     <string name="paste_sensitive_warning">This content was marked as sensitive (for example a password). Check before sending.</string>
     <string name="send_to">Send to</string>
     <string name="result_no_targets">No connected computer to send to.</string>
 
-    <string name="status_sync_off_title">Synchronization is off</string>
-    <string name="status_sync_off_body">Nothing is sent or received.</string>
-    <string name="status_no_devices_title">No computers paired</string>
-    <string name="status_no_devices_body">Run “universal-clipboard pair” on your computer, then pair it here.</string>
-    <string name="status_none_connected_title">Not connected</string>
-    <string name="status_none_connected_body">Your computers are not reachable. Make sure they are on the same network and the daemon is running.</string>
-    <string name="status_connected_title">Connected to %1$d of %2$d</string>
-    <string name="status_background_on">Background connection is on: content from your computers is copied here even when the app is closed.</string>
-    <string name="status_background_off">Content from your computers is copied here while the app is open.</string>
 
     <!-- Connection states -->
     <string name="status_connected">Connected</string>
@@ -71,14 +64,14 @@
 
     <!-- Devices -->
     <string name="devices_empty_title">No computers yet</string>
-    <string name="devices_empty_body">Pair a computer running the Universal Clipboard daemon to start sharing your clipboard.</string>
+    <string name="devices_empty_body">Pair a computer running the LuniBoard daemon to start sharing your clipboard.</string>
     <string name="permission_send">Send to this computer</string>
     <string name="permission_receive">Receive from this computer</string>
     <string name="unpair_title">Remove %1$s?</string>
-    <string name="unpair_body">This phone will forget %1$s and stop syncing with it. Also run “universal-clipboard unpair” on %1$s to revoke this phone there.</string>
+    <string name="unpair_body">This phone will forget %1$s and stop syncing with it. Also run “luniboard unpair” on %1$s to revoke this phone there.</string>
 
     <!-- Pairing -->
-    <string name="pair_intro">On your computer run “universal-clipboard pair”. It shows a QR code and a pairing code.</string>
+    <string name="pair_intro">On your computer run “luniboard pair”. It shows a QR code and a pairing code.</string>
     <string name="pair_scan_qr">Scan QR code</string>
     <string name="pair_nearby">Computers on this network</string>
     <string name="pair_nearby_searching">Searching… (requires mDNS; if nothing appears, scan the QR code instead)</string>
