@@ -27,11 +27,21 @@ no relay. Clipboard content travels only between devices you paired, over mutual
 
 ## Quick start (Linux)
 
+Arch Linux (AUR):
+
 ```sh
-sudo pacman -S wl-clipboard xclip      # or apt/dnf install wl-clipboard xclip
-make install                           # builds and installs to ~/.local/bin (Go ≥ 1.23)
-luniboard service install    # start now and at login
-luniboard pair               # shows a QR code and pairing code
+yay -S luniboard-bin wl-clipboard      # or paru / makepkg
+luniboard service install              # start now and at every login
+luniboard pair                         # shows a QR code and pairing code
+```
+
+Other distributions, from source (Go ≥ 1.23):
+
+```sh
+sudo apt install wl-clipboard xclip    # or dnf / zypper
+make install                           # builds and installs to ~/.local/bin
+luniboard service install
+luniboard pair
 ```
 
 Pair a second computer with `luniboard pair connect '<uri shown by the first>'`, approve

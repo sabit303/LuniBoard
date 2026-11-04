@@ -29,6 +29,7 @@ make test         # unit + integration tests with the race detector
 make e2e          # builds the binary and drives two daemons through the CLI
 make vet          # go vet
 make cross        # cross-compile linux/amd64, linux/arm64, windows/amd64, darwin/arm64
+make release VERSION=0.1.0   # dist/luniboard-0.1.0-linux-{amd64,arm64}.tar.gz for the AUR package
 ```
 
 Opt-in tests that touch the real system (they overwrite your clipboard / use the network):
@@ -75,3 +76,11 @@ Keep socket paths short (Unix sockets are limited to ~108 bytes).
 * Errors are wrapped with context; logs are structured (`log/slog`) and never include clipboard text.
 * Every protocol change updates `pkg/protocol`, `protocol/protocol.md`, the schemas and examples
   together — the contract tests enforce consistency.
+
+## Releasing
+
+1. `git tag v0.1.0 && git push origin v0.1.0` — the Release workflow tests, builds the Linux
+   tarballs and other-platform binaries, and creates a GitHub (pre)release.
+2. Update the AUR package in `packaging/linux/arch/luniboard-bin/` (see its README):
+   bump `pkgver`, run `updpkgsums`, `makepkg -si`, `makepkg --printsrcinfo > .SRCINFO`, and push to
+   `aur.archlinux.org/luniboard-bin.git`.

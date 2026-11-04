@@ -17,6 +17,7 @@ import (
 	"github.com/brutella/dnssd"
 	dnssdlog "github.com/brutella/dnssd/log"
 
+	"github.com/luniboard/luniboard/daemon/internal/netutil"
 	"github.com/luniboard/luniboard/daemon/pkg/protocol"
 )
 
@@ -223,18 +224,7 @@ func ParseEntry(e dnssd.BrowseEntry, selfID string) (Peer, bool) {
 	return p, len(p.Addresses) > 0
 }
 
-// virtualInterfacePrefixes identify container/VM bridges whose addresses are
-// rarely reachable from other machines.
-var virtualInterfacePrefixes = []string{"docker", "veth", "br-", "virbr", "vmnet", "vboxnet", "podman", "cni", "flannel", "lxc", "lxd"}
-
-func isVirtualInterface(name string) bool {
-	for _, p := range virtualInterfacePrefixes {
-		if strings.HasPrefix(name, p) {
-			return true
-		}
-	}
-	return false
-}
+func isVirtualInterface(name string) bool { return netutil.IsVirtualInterface(name) }
 
 // sortAddresses prefers IPv4, then global IPv6, then link-local IPv6.
 func sortAddresses(addrs []string) {

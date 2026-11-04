@@ -1,0 +1,34 @@
+# Maintainer: sabit303 <https://github.com/sabit303>
+pkgname=luniboard-bin
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="LAN clipboard sync between Linux, Android and other devices (prebuilt daemon + CLI)"
+arch=('x86_64' 'aarch64')
+url="https://github.com/sabit303/LuniBoard"
+license=('MIT')
+optdepends=(
+  'wl-clipboard: clipboard access in Wayland sessions (GNOME, KDE, Hyprland, Sway, ...)'
+  'xclip: clipboard access in X11 sessions'
+  'xsel: alternative X11 clipboard tool'
+)
+provides=('luniboard')
+conflicts=('luniboard')
+install=luniboard.install
+options=('!strip' '!debug')
+_rel="https://github.com/sabit303/LuniBoard/releases/download/v${pkgver}"
+source_x86_64=("${_rel}/luniboard-${pkgver}-linux-amd64.tar.gz")
+source_aarch64=("${_rel}/luniboard-${pkgver}-linux-arm64.tar.gz")
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
+
+package() {
+  local _arch=amd64
+  [[ $CARCH == aarch64 ]] && _arch=arm64
+  cd "luniboard-${pkgver}-linux-${_arch}"
+
+  install -Dm755 luniboard "$pkgdir/usr/bin/luniboard"
+  install -Dm644 luniboard.service "$pkgdir/usr/lib/systemd/user/luniboard.service"
+  install -Dm644 config.example.toml "$pkgdir/usr/share/doc/luniboard/config.example.toml"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/luniboard/README.md"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

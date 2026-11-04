@@ -33,6 +33,7 @@ access to an unlocked device.
 | Password managers | Content flagged with `x-kde-passwordManagerHint` (KeePassXC and others) is not synchronized or recorded (`clipboard.skip_sensitive`, default on). |
 | User control | `pause`/`resume`, `sync.excluded_content_types`, `sync.receive`, `sync.auto_send`, `history.enabled`, `history clear`. |
 | Proxies | LAN connections never use HTTP proxy settings; redirects are refused. |
+| Firewall changes | `luniboard firewall allow` (also run by the AUR package on install) only opens the configured port and UDP 5353 for the private subnet(s) of physical interfaces, tags the rules `LuniBoard`, echoes every command, and `firewall remove`/uninstall deletes them. |
 
 ## Limitations and residual risks
 
@@ -45,6 +46,9 @@ access to an unlocked device.
   does not grant access; re-open the window.
 * **Verification code.** The 6-digit code only protects manual-code pairing if the user actually
   compares it.
+* **Same subnet elsewhere.** Firewall rules are subnet-based: on another network that uses the same
+  private range (e.g. a café using `192.168.0.0/24`), the port is reachable there too. Connections
+  still require a paired certificate; run `luniboard firewall remove` if that matters to you.
 * **Metadata.** mDNS advertises the device name, ID and fingerprint to the LAN. Set
   `discovery.advertise = false` (pairing via QR still works, and remembered addresses are dialed).
 * **Clipboard managers.** Text written by the daemon is visible to other applications on the same

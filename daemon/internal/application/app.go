@@ -10,7 +10,6 @@ import (
 	"runtime"
 	"slices"
 	"strconv"
-	"strings"
 	"sync"
 	"time"
 
@@ -20,6 +19,7 @@ import (
 	"github.com/luniboard/luniboard/daemon/internal/device"
 	"github.com/luniboard/luniboard/daemon/internal/discovery"
 	"github.com/luniboard/luniboard/daemon/internal/history"
+	"github.com/luniboard/luniboard/daemon/internal/netutil"
 	"github.com/luniboard/luniboard/daemon/internal/pairing"
 	"github.com/luniboard/luniboard/daemon/internal/security"
 	"github.com/luniboard/luniboard/daemon/internal/synchronization"
@@ -310,9 +310,6 @@ func (a *App) invitationAddresses() []string {
 	return out
 }
 
-// virtualInterfacePrefixes are skipped when choosing addresses to advertise in invitations.
-var virtualInterfacePrefixes = []string{"lo", "docker", "veth", "br-", "virbr", "vmnet", "vboxnet", "tun", "tap", "wg", "zt", "tailscale", "podman", "cni", "flannel"}
-
 // LocalIPs returns usable LAN addresses, private IPv4 first, at most four.
 func LocalIPs() []string {
 	ifaces, err := net.Interfaces()
@@ -324,14 +321,7 @@ func LocalIPs() []string {
 		if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
 			continue
 		}
-		skip := false
-		for _, p := range virtualInterfacePrefixes {
-			if strings.HasPrefix(iface.Name, p) {
-				skip = true
-				break
-			}
-		}
-		if skip {
+		if netutil.IsVirtualInterface(iface.Name) {
 			continue
 		}
 		addrs, _ := iface.Addrs()

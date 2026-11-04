@@ -17,6 +17,12 @@ import (
 // UnitName is the systemd user unit name.
 const UnitName = "luniboard.service"
 
+// VendorUnitPath is where distribution packages install the unit.
+var VendorUnitPath = "/usr/lib/systemd/user/" + UnitName
+
+// packagedExecutable is the binary path used by distribution packages.
+const packagedExecutable = "/usr/bin/luniboard"
+
 // legacyUnitName is the unit installed before the daemon was renamed.
 const legacyUnitName = "universal-clipboard.service"
 
@@ -33,7 +39,7 @@ func Unit(o UnitOptions) string {
 	var b strings.Builder
 	b.WriteString(`[Unit]
 Description=LuniBoard daemon (LAN clipboard synchronization)
-Documentation=https://github.com/luniboard/luniboard
+Documentation=https://github.com/sabit303/LuniBoard
 After=network-online.target graphical-session.target
 Wants=network-online.target
 
@@ -84,13 +90,26 @@ func Available() bool {
 	return systemctl(context.Background(), "show-environment") == nil
 }
 
-// Installed reports whether the unit file exists.
+// Installed reports whether a user or packaged unit file exists.
 func Installed() bool {
+	if _, err := os.Stat(VendorUnitPath); err == nil {
+		return true
+	}
 	p, err := UnitPath()
 	if err != nil {
 		return false
 	}
 	_, err = os.Stat(p)
+	return err == nil
+}
+
+// usePackagedUnit reports whether the distribution package's unit should be
+// enabled instead of generating a per-user copy.
+func usePackagedUnit(o UnitOptions) bool {
+	if o.Home != "" || o.Executable != packagedExecutable {
+		return false
+	}
+	_, err := os.Stat(VendorUnitPath)
 	return err == nil
 }
 
@@ -108,19 +127,32 @@ func Install(o UnitOptions) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
-		return "", err
-	}
-	if err := os.WriteFile(p, []byte(Unit(o)), 0o644); err != nil {
-		return "", err
-	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	removeLegacyUnit(ctx, filepath.Dir(p))
+	if usePackagedUnit(o) {
+		// A per-user copy would shadow the packaged unit (and may point at an old binary).
+		_ = systemctl(ctx, "disable", UnitName)
+		if err := os.Remove(p); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return "", err
+		}
+		p = VendorUnitPath
+	} else {
+		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
+			return "", err
+		}
+		if err := os.WriteFile(p, []byte(Unit(o)), 0o644); err != nil {
+			return "", err
+		}
+	}
 	if err := systemctl(ctx, "daemon-reload"); err != nil {
 		return p, err
 	}
-	return p, systemctl(ctx, "enable", "--now", UnitName)
+	if err := systemctl(ctx, "enable", UnitName); err != nil {
+		return p, err
+	}
+	// Restart (not just start) so a changed unit or upgraded binary takes effect.
+	return p, systemctl(ctx, "restart", UnitName)
 }
 
 // removeLegacyUnit stops and removes the pre-rename unit so two daemons never run.

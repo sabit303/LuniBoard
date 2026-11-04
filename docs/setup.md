@@ -20,9 +20,17 @@ sudo dnf install wl-clipboard xclip      # Fedora
 
 Installing both is harmless; the daemon detects the session type.
 
-## 2. Build and install
+## 2. Install
 
-Requires Go ≥ 1.23.
+**Arch Linux:** install the AUR package `luniboard-bin` (prebuilt binary, systemd user unit in
+`/usr/lib/systemd/user`), then enable it for your user:
+
+```sh
+yay -S luniboard-bin
+luniboard service install      # enables /usr/lib/systemd/user/luniboard.service
+```
+
+**From source** (any distribution, Go ≥ 1.23):
 
 ```sh
 make build                     # -> bin/luniboard
@@ -49,13 +57,26 @@ session appears, so starting before the graphical session is fine.
 
 ## 3. Firewall
 
-Allow inbound **TCP 47823** (or your `network.port`) and **UDP 5353** (mDNS) on your LAN, e.g.
+LuniBoard needs inbound **TCP 47823** (your `network.port`) and, for discovery, **UDP 5353** (mDNS)
+from your local network. It configures **ufw** and **firewalld** for you:
+
+* the AUR package runs `luniboard firewall allow` when it is installed (and removes its rules on uninstall);
+* `luniboard service install` offers to do it if a firewall is active.
+
+Rules only allow the subnet(s) of your current Wi-Fi/Ethernet (e.g. `192.168.0.0/24`), never the
+internet, and are tagged `LuniBoard` so they can be removed cleanly.
 
 ```sh
-sudo ufw allow from 192.168.0.0/16 to any port 47823 proto tcp
-sudo ufw allow from 192.168.0.0/16 to any port 5353 proto udp
-sudo firewall-cmd --add-port=47823/tcp --add-service=mdns --permanent && sudo firewall-cmd --reload
+luniboard firewall status                 # which firewall is active
+luniboard firewall allow                  # open for the current local network (asks for sudo)
+luniboard firewall allow --dry-run        # show the exact commands first
+luniboard firewall allow --any-private    # all private ranges (laptop used on several trusted networks)
+luniboard firewall allow --subnet 192.168.1.0/24 --no-mdns
+luniboard firewall remove                 # delete every rule LuniBoard added
 ```
+
+After joining a different home network, run `luniboard firewall allow` again. For plain
+**nftables**/**iptables** setups, `luniboard firewall status` prints the rules to add manually.
 
 ## 4. Pair devices
 

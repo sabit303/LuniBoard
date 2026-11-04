@@ -2,10 +2,10 @@
 GO      ?= go
 BIN     := bin/luniboard
 PREFIX  ?= $(HOME)/.local
-VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo 0.1.0-dev)
+VERSION ?= $(patsubst v%,%,$(shell git describe --tags --always --dirty 2>/dev/null || echo 0.1.0-dev))
 LDFLAGS := -s -w -X github.com/luniboard/luniboard/daemon/internal/application.Version=$(VERSION)
 
-.PHONY: all build test test-short e2e vet fmt cross install uninstall clean
+.PHONY: all build test test-short e2e vet fmt cross release install uninstall clean
 
 all: vet test build
 
@@ -35,6 +35,21 @@ cross:
 		(cd daemon && CGO_ENABLED=0 GOOS=$$os GOARCH=$$arch $(GO) build -trimpath -ldflags '$(LDFLAGS)' \
 			-o ../dist/luniboard-$$os-$$arch$$ext ./cmd/luniboard) || exit 1; \
 	done
+
+# Linux release tarballs consumed by packaging/linux/arch/luniboard-bin/PKGBUILD:
+#   dist/luniboard-$(VERSION)-linux-{amd64,arm64}.tar.gz
+release:
+	@rm -rf dist/release && mkdir -p dist/release
+	@for arch in amd64 arm64; do \
+		name=luniboard-$(VERSION)-linux-$$arch; dir=dist/release/$$name; \
+		echo "packaging $$name"; mkdir -p $$dir; \
+		(cd daemon && CGO_ENABLED=0 GOOS=linux GOARCH=$$arch $(GO) build -p 2 -trimpath -ldflags '$(LDFLAGS)' \
+			-o ../$$dir/luniboard ./cmd/luniboard) || exit 1; \
+		cp packaging/linux/systemd/luniboard.service LICENSE README.md daemon/configs/config.example.toml $$dir/; \
+		tar -C dist/release --owner=0 --group=0 --sort=name -czf dist/$$name.tar.gz $$name || exit 1; \
+	done
+	@rm -rf dist/release
+	@cd dist && sha256sum luniboard-$(VERSION)-linux-*.tar.gz | tee luniboard-$(VERSION)-SHA256SUMS
 
 install: build
 	install -Dm755 $(BIN) $(PREFIX)/bin/luniboard

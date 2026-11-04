@@ -4,7 +4,7 @@
 # which generates an equivalent unit pointing at the installed binary.
 [Unit]
 Description=LuniBoard daemon (LAN clipboard synchronization)
-Documentation=https://github.com/luniboard/luniboard
+Documentation=https://github.com/sabit303/LuniBoard
 After=network-online.target graphical-session.target
 Wants=network-online.target
 

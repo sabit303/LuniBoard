@@ -159,6 +159,7 @@ func runService(ctx context.Context, g *globals, args []string) error {
 		g.printf("The service starts automatically when you log in.\n")
 		g.printf("If clipboard access fails on X11 or in minimal Wayland sessions, export the session environment:\n")
 		g.printf("  systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XAUTHORITY\n")
+		offerFirewall(ctx, g)
 		return nil
 	case "uninstall":
 		if err := servicelinux.Uninstall(); err != nil {

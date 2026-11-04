@@ -64,6 +64,7 @@ func commands() []command {
 		{"config", "Show or initialize configuration: config [show|path|init]", runConfig},
 		{"logs", "Show daemon logs: logs [-n lines] [-f]", runLogs},
 		{"service", "Manage the background service: service install|uninstall|status", runService},
+		{"firewall", "Open the port for your local network: firewall [status|allow|remove]", runFirewall},
 		{"version", "Print version", runVersion},
 	}
 }

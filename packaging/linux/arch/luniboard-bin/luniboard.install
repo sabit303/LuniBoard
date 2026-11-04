@@ -1,0 +1,31 @@
+post_install() {
+  # Open the LuniBoard port (and mDNS) in ufw/firewalld for the current local
+  # network only. Does nothing when no firewall is active.
+  echo "==> Configuring the firewall for LuniBoard (local network only)..."
+  /usr/bin/luniboard firewall allow || \
+    echo "==> Could not update the firewall automatically; run 'luniboard firewall allow' later."
+
+  cat <<'MSG'
+==> LuniBoard is installed. As your normal user (not root), run:
+      luniboard service install   # start now and at every login
+      luniboard pair              # connect your phone
+    Clipboard tools: install wl-clipboard (Wayland) and/or xclip (X11).
+    Changed networks? Run 'luniboard firewall allow' again.
+MSG
+}
+
+post_upgrade() {
+  cat <<'MSG'
+==> Restart LuniBoard to use the new version:
+      systemctl --user restart luniboard
+MSG
+}
+
+pre_remove() {
+  echo "==> Removing LuniBoard firewall rules..."
+  /usr/bin/luniboard firewall remove || true
+  cat <<'MSG'
+==> If you enabled the service, disable it as your user:
+      systemctl --user disable --now luniboard
+MSG
+}

@@ -40,3 +40,27 @@ func TestUnitVerifies(t *testing.T) {
 		t.Fatalf("systemd-analyze verify failed: %v\n%s", err, out)
 	}
 }
+
+func TestUsePackagedUnit(t *testing.T) {
+	dir := t.TempDir()
+	old := VendorUnitPath
+	defer func() { VendorUnitPath = old }()
+	VendorUnitPath = filepath.Join(dir, UnitName)
+
+	pkg := UnitOptions{Executable: packagedExecutable}
+	if usePackagedUnit(pkg) {
+		t.Fatal("no vendor unit installed yet")
+	}
+	if err := os.WriteFile(VendorUnitPath, []byte(Unit(pkg)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if !usePackagedUnit(pkg) {
+		t.Fatal("packaged binary with vendor unit should use it")
+	}
+	if usePackagedUnit(UnitOptions{Executable: "/home/me/.local/bin/luniboard"}) {
+		t.Fatal("a ~/.local binary must get its own unit")
+	}
+	if usePackagedUnit(UnitOptions{Executable: packagedExecutable, Home: "/tmp/x"}) {
+		t.Fatal("custom home needs its own unit (Environment=)")
+	}
+}
