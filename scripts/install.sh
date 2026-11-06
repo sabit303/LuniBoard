@@ -1,9 +1,9 @@
 #!/bin/sh
 # LuniBoard installer for Linux.
 #
-# Installs the latest released daemon for the current user, starts it at
-# login and (if a firewall is active) offers to open its port for the local
-# network. Run it again to update; run with --uninstall to remove.
+# Installs the latest released daemon for the current user, adds it to PATH,
+# starts it at login and (if a firewall is active) offers to open its port for
+# the local network. Run it again to update; run with --uninstall to remove.
 #
 #   curl -fsSL https://raw.githubusercontent.com/sabit303/LuniBoard/main/scripts/install.sh | sh
 #   sh install.sh [--version 0.1.0] [--uninstall] [--no-service] [--yes]
@@ -187,10 +187,28 @@ chmod 755 "$INSTALL_DIR/.luniboard.new"
 mv -f "$INSTALL_DIR/.luniboard.new" "$BIN"
 info "Installed $BIN ($("$BIN" version))"
 
+# -------------------------------------------------------------- shell PATH ----
+
 case ":$PATH:" in
 *":$INSTALL_DIR:"*) ;;
-*) warn "$INSTALL_DIR is not in your PATH. Add this line to ~/.bashrc or ~/.zshrc, then open a new terminal:
-      export PATH=\"$INSTALL_DIR:\$PATH\"" ;;
+*)
+	case ${SHELL:-} in
+	*/bash | bash) shell_rc=$HOME/.bashrc ;;
+	*/zsh | zsh) shell_rc=${ZDOTDIR:-$HOME}/.zshrc ;;
+	*) shell_rc=$HOME/.profile ;;
+	esac
+	# Keep custom directory names literal while expanding PATH when the shell starts.
+	escaped_install_dir=$(printf '%s\n' "$INSTALL_DIR" | sed 's/[\\$`"]/\\&/g')
+	path_line="case \":\$PATH:\" in *:\"$escaped_install_dir\":*) ;; *) export PATH=\"$escaped_install_dir:\$PATH\" ;; esac"
+	if grep -Fqx "$path_line" "$shell_rc" 2>/dev/null ||
+		(mkdir -p "$(dirname "$shell_rc")" &&
+			printf '\n# Added by the LuniBoard installer\n%s\n' "$path_line" >> "$shell_rc"); then
+		info "PATH configured in $shell_rc. Open a new terminal to use luniboard."
+	else
+		warn "could not update $shell_rc. Add this line manually:
+      export PATH=\"$escaped_install_dir:\$PATH\""
+	fi
+	;;
 esac
 
 # ------------------------------------------------------- clipboard tools ----
