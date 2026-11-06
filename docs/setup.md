@@ -22,6 +22,18 @@ Installing both is harmless; the daemon detects the session type.
 
 ## 2. Install
 
+**Easiest (any distribution):**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/sabit303/LuniBoard/main/scripts/install.sh | sh
+```
+
+The [installer](../scripts/install.sh) finds the newest release, downloads the build for your CPU
+(x86_64 or aarch64), verifies its SHA-256 checksum, installs `luniboard` to `~/.local/bin` (no root),
+offers to install `wl-clipboard`/`xclip` if missing, starts the systemd user service, and offers to
+open the firewall. Options: `--version 0.1.0`, `--no-service`, `--yes`, `--uninstall`.
+If you prefer to read it first: download it, inspect it, then run `sh install.sh`.
+
 **Arch Linux:** install the AUR package `luniboard-bin` (prebuilt binary, systemd user unit in
 `/usr/lib/systemd/user`), then enable it for your user:
 

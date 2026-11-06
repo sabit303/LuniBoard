@@ -27,6 +27,16 @@ no relay. Clipboard content travels only between devices you paired, over mutual
 
 ## Quick start (Linux)
 
+Any distribution — one command (installs the latest release for your user, starts it at login,
+offers to install clipboard tools and open the firewall for your local network):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/sabit303/LuniBoard/main/scripts/install.sh | sh
+luniboard pair                         # shows a QR code for the phone app
+```
+
+Run the same command again to update; `… | sh -s -- --uninstall` removes it.
+
 Arch Linux (AUR):
 
 ```sh
