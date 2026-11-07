@@ -2,6 +2,7 @@ package discovery
 
 import (
 	"context"
+	"errors"
 	"net"
 	"os"
 	"testing"
@@ -111,5 +112,51 @@ func TestMergePrefersPhysicalInterfaces(t *testing.T) {
 	}
 	if s.add(dnssd.BrowseEntry{IPs: []net.IP{net.ParseIP("192.168.1.9")}, Port: 1, Name: "X", Text: map[string]string{}}) {
 		t.Fatal("entry without TXT should be reported incomplete")
+	}
+}
+
+// TestBrowseCycleEndsCanceled guards against the dnssd v1.2.14 busy loop: its
+// socket readers only stop when the context error is context.Canceled, so a
+// browse cycle must never end with context.DeadlineExceeded.
+func TestBrowseCycleEndsCanceled(t *testing.T) {
+	s := New(Options{
+		Self: func() protocol.DeviceInfo {
+			return protocol.DeviceInfo{ID: "self-123456", Name: "Self", Platform: protocol.PlatformLinux}
+		},
+		Logger: logging.Discard(),
+	})
+	s.browseCycle = 10 * time.Millisecond
+
+	ended := make(chan error, 8)
+	s.lookup = func(ctx context.Context, _ string, _ dnssd.AddFunc, _ dnssd.RmvFunc) error {
+		<-ctx.Done()
+		err := ctx.Err()
+		ended <- err
+		return err
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan error, 1)
+	go func() { done <- s.Run(ctx) }()
+
+	timeout := time.After(5 * time.Second)
+	for i := 0; i < 2; i++ {
+		select {
+		case err := <-ended:
+			if !errors.Is(err, context.Canceled) {
+				cancel()
+				<-done
+				t.Fatalf("browse cycle ended with %v, want context.Canceled", err)
+			}
+		case <-timeout:
+			cancel()
+			<-done
+			t.Fatal("browse cycles did not run")
+		}
+	}
+	// The lookup for the cycle that is running now is canceled by the parent.
+	cancel()
+	if err := <-done; err != nil {
+		t.Fatalf("Run returned %v", err)
 	}
 }
