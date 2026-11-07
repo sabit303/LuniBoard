@@ -14,13 +14,22 @@ on that platform**, and **not implemented**. It is updated with every phase.
 | X11 (GNOME on Xorg, XFCE, i3, …) | xclip / xsel | polling (`clipboard.poll_interval`) | Implemented; adapter verified via XWayland; not verified on a native Xorg session |
 | Ubuntu, Fedora, Debian | same as above | same | Distribution-independent code; not yet verified on these distributions |
 | Headless Linux | `none` | — | Implemented and covered by automated end-to-end tests |
-| Windows | — | — | **Not implemented** (Phase 6). The daemon compiles and runs headless. |
+| Windows desktop session | Native `CF_UNICODETEXT` | polling (`clipboard.poll_interval`) | Implemented (text/URLs only); not yet manually verified. Use [manual startup](setup.md#windows-manual-setup). |
 | macOS | — | — | **Not implemented** (Phase 6). The daemon compiles and runs headless. |
 
 Service integration: systemd user service (`luniboard service install`) — implemented;
 the generated unit passes `systemd-analyze --user verify` in the test suite, but `service install`
-itself has not yet been exercised on a real login session. Windows startup and macOS LaunchAgent
-are Phase 6.
+itself has not yet been exercised on a real login session. Windows service/login startup,
+installer and firewall integration, and macOS LaunchAgent remain unimplemented (Phase 6).
+
+On Windows, `clipboard.backend = "auto"` selects the native text backend; `"windows"` forces it.
+It needs no external clipboard tools and uses the existing polling service, not change notifications.
+Text and line endings are preserved; images/files are not supported. Windows clipboard exclusion
+metadata is honored by `clipboard.skip_sensitive`. `wayland`/`x11` cannot be forced on Windows,
+and `windows` cannot be forced on other operating systems.
+
+Windows may block a clipboard read for up to 30 seconds while another application renders its
+data. Cancelled reads discard late results, but shutdown must wait for that native call to return.
 
 ## Mobile
 

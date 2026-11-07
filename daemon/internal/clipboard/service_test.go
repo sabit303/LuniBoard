@@ -69,9 +69,44 @@ func TestDetect(t *testing.T) {
 		})
 	}
 	env := fakeEnv(map[string]string{"WAYLAND_DISPLAY": "w"}, all, nil)
-	env.GOOS = "windows"
+	env.GOOS = "darwin"
 	if _, err := Detect("auto", env, 1024); !errors.Is(err, ErrNoBackend) {
-		t.Fatalf("expected ErrNoBackend on windows, got %v", err)
+		t.Fatalf("expected ErrNoBackend on darwin, got %v", err)
+	}
+}
+
+func TestDetectBackendPlatformRestrictions(t *testing.T) {
+	for _, goos := range []string{"linux", "freebsd", "openbsd", "netbsd", "dragonfly", "darwin"} {
+		t.Run("windows on "+goos, func(t *testing.T) {
+			_, err := Detect("windows", Env{GOOS: goos}, 1024)
+			if !errors.Is(err, ErrNoBackend) || !strings.Contains(err.Error(), "only available on Windows") {
+				t.Fatalf("expected Windows-only backend error, got %v", err)
+			}
+		})
+	}
+	for _, backend := range []string{"wayland", "x11"} {
+		t.Run(backend+" on windows", func(t *testing.T) {
+			_, err := Detect(backend, Env{GOOS: "windows"}, 1024)
+			if !errors.Is(err, ErrNoBackend) || !strings.Contains(err.Error(), backend+" backend is not supported on Windows") {
+				t.Fatalf("expected unsupported backend error, got %v", err)
+			}
+		})
+	}
+}
+
+func TestDetectBSD(t *testing.T) {
+	for _, goos := range []string{"freebsd", "openbsd", "netbsd", "dragonfly"} {
+		t.Run(goos, func(t *testing.T) {
+			env := fakeEnv(map[string]string{"DISPLAY": ":0"}, []string{"xclip"}, nil)
+			env.GOOS = goos
+			b, err := Detect("auto", env, 1024)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if b.Adapter.Name() != "x11 (xclip)" {
+				t.Fatalf("expected x11 (xclip), got %q", b.Adapter.Name())
+			}
+		})
 	}
 }
 

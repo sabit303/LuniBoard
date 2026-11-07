@@ -38,7 +38,7 @@ type Status struct {
 
 // Options configures a Service.
 type Options struct {
-	// Backend is auto, wayland, x11 or none.
+	// Backend is auto, wayland, x11, windows or none.
 	Backend      string
 	PollInterval time.Duration
 	MaxBytes     int64

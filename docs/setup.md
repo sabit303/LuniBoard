@@ -1,11 +1,13 @@
-# Setup (Linux)
+# Setup
 
-The daemon runs on any mainstream distribution (tested on Arch Linux; Ubuntu, Fedora and Debian use
+The Linux daemon runs on any mainstream distribution (tested on Arch Linux; Ubuntu, Fedora and Debian use
 the same code paths) and any desktop: GNOME, KDE Plasma, XFCE, Hyprland, Sway, i3, … It does not use
 desktop-specific APIs. See [platform-compatibility.md](platform-compatibility.md) for what has been
 verified.
 
-## 1. Install the clipboard tools
+Windows users can skip the Linux installation steps and use [manual setup](#windows-manual-setup).
+
+## 1. Linux clipboard tools
 
 | Session | Package |
 |---------|---------|
@@ -20,7 +22,7 @@ sudo dnf install wl-clipboard xclip      # Fedora
 
 Installing both is harmless; the daemon detects the session type.
 
-## 2. Install
+## 2. Install on Linux
 
 **Easiest (any distribution):**
 
@@ -67,7 +69,7 @@ these to systemd automatically. If you use a window manager that does not (Sway,
 `luniboard status` shows the detected backend; it keeps retrying every 10 s until a
 session appears, so starting before the graphical session is fine.
 
-## 3. Firewall
+## 3. Linux firewall
 
 LuniBoard needs inbound **TCP 47823** (your `network.port`) and, for discovery, **UDP 5353** (mDNS)
 from your local network. It configures **ufw** and **firewalld** for you:
@@ -89,6 +91,37 @@ luniboard firewall remove                 # delete every rule LuniBoard added
 
 After joining a different home network, run `luniboard firewall allow` again. For plain
 **nftables**/**iptables** setups, `luniboard firewall status` prints the rules to add manually.
+
+## Windows (manual setup)
+
+Build from source in PowerShell with the Go version required by `daemon/go.mod`, then run in your
+logged-in desktop session:
+
+```powershell
+cd daemon
+go build -o luniboard.exe ./cmd/luniboard
+.\luniboard.exe config init
+.\luniboard.exe daemon
+```
+
+`daemon` runs in the foreground. Use `.\luniboard.exe start` instead for a detached process,
+`.\luniboard.exe status` to check it, and `.\luniboard.exe stop` to stop it. These are manual
+commands, not a Windows service or login-startup registration. Use `.\luniboard.exe` for the
+remaining CLI examples below.
+
+The default `clipboard.backend = "auto"` selects `windows`; it can also be set explicitly to
+`"windows"`. The native backend syncs text/URLs only, preserves line endings, and polls every
+`clipboard.poll_interval` (750 ms by default). No external clipboard tools are needed. Status shows
+`windows, poll` once the clipboard is available. Images/files are not supported.
+
+The existing local API uses Unix-domain sockets and requires Windows 10 1803+ or Windows 11.
+Keep its socket path below 108 bytes; use a short, private `--home` directory if a long profile path
+prevents startup. The daemon relies on the directory's existing Windows ACLs. Data and logs normally
+live under `%LOCALAPPDATA%\LuniBoard`.
+
+There is no Windows installer, service/login-startup integration or firewall helper. Do not use the
+Linux installer or `service install`/`firewall allow` on Windows. Allow inbound TCP 47823 (or your
+configured port) and UDP 5353 for mDNS manually, restricted to trusted local networks.
 
 ## 4. Pair devices
 
@@ -128,7 +161,8 @@ All commands accept `--json`.
 
 ## 6. Configuration
 
-`luniboard config init` writes the defaults to `~/.config/luniboard/config.toml`;
+`luniboard config init` writes the defaults to `~/.config/luniboard/config.toml` on Linux or
+`%APPDATA%\LuniBoard\config.toml` on Windows;
 `config show` prints the effective configuration. Unknown keys are rejected. Restart the daemon
 after editing.
 
@@ -141,9 +175,9 @@ after editing.
 | `discovery.enabled` | `true` | Browse mDNS for paired devices |
 | `discovery.advertise` | `true` | Advertise this device via mDNS |
 | `discovery.interfaces` | `[]` | Restrict mDNS to these interfaces |
-| `clipboard.backend` | `auto` | `auto`, `wayland`, `x11`, `none` (headless: received text only goes to history) |
-| `clipboard.poll_interval` | `750ms` | Polling period when change notifications are unavailable |
-| `clipboard.skip_sensitive` | `true` | Ignore content marked secret by password managers |
+| `clipboard.backend` | `auto` | `auto`, `wayland`, `x11`, `windows`, `none` (headless: received text only goes to history) |
+| `clipboard.poll_interval` | `750ms` | Polling period for Windows, X11 or Wayland without change notifications |
+| `clipboard.skip_sensitive` | `true` | Ignore password-manager hints and Windows clipboard exclusion metadata |
 | `sync.enabled` | `true` | Initial state; `pause`/`resume` change it at runtime |
 | `sync.auto_send` | `true` | Send local clipboard changes automatically |
 | `sync.receive` | `true` | Apply content received from devices |
@@ -160,7 +194,7 @@ after editing.
 | `security.events_per_second` / `event_burst` | `5` / `20` | Per-device incoming event rate limit |
 | `logging.level` / `format` / `file` | `info` / `text` / `true` | Logs (never contain clipboard text) |
 
-## Uninstall
+## Uninstall (Linux)
 
 ```sh
 luniboard service uninstall

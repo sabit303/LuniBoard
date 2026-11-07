@@ -14,6 +14,18 @@ func TestDefaultIsValid(t *testing.T) {
 	}
 }
 
+func TestValidateClipboardBackends(t *testing.T) {
+	for _, backend := range []string{"auto", "wayland", "x11", "windows", "none"} {
+		t.Run(backend, func(t *testing.T) {
+			cfg := Default()
+			cfg.Clipboard.Backend = backend
+			if err := cfg.Validate(); err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}
+
 func TestLoadMissingFileReturnsDefaults(t *testing.T) {
 	cfg, err := Load(filepath.Join(t.TempDir(), "nope.toml"))
 	if err != nil {
