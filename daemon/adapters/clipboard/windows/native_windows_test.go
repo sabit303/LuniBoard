@@ -130,9 +130,18 @@ func TestRealClipboardContentionCancellation(t *testing.T) {
 		runtime.LockOSThread()
 		defer runtime.UnlockOSThread()
 		defer close(done)
+		// Windows only treats a different *window* as contention. A NULL owner
+		// does not block another NULL-owner open, so hold the clipboard with a
+		// real window to exercise the unavailable path from the main goroutine.
+		owner, err := a.api.createWindow()
+		if err != nil {
+			opened <- err
+			return
+		}
+		defer a.api.destroyWindow(owner)
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		err := a.open(ctx, 0)
+		err = a.open(ctx, owner)
 		opened <- err
 		if err == nil {
 			defer a.api.closeClipboard()
