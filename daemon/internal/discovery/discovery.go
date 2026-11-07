@@ -63,11 +63,6 @@ type Service struct {
 	peers map[string]Peer
 	// byInstance maps DNS-SD instance names to device IDs for removals.
 	byInstance map[string]string
-
-	// lookup runs one browse cycle; overridden in tests.
-	lookup func(ctx context.Context, service string, add dnssd.AddFunc, rmv dnssd.RmvFunc) error
-	// browseCycle is the duration of one browse cycle; overridden in tests.
-	browseCycle time.Duration
 }
 
 // New creates a discovery service.
@@ -77,14 +72,7 @@ func New(opts Options) *Service {
 	}
 	// The library logs to stdout by default; route nothing there.
 	dnssdlog.Info.Disable()
-	return &Service{
-		opts:        opts,
-		log:         opts.Logger,
-		peers:       make(map[string]Peer),
-		byInstance:  make(map[string]string),
-		lookup:      dnssd.LookupType,
-		browseCycle: defaultBrowseCycle,
-	}
+	return &Service{opts: opts, log: opts.Logger, peers: make(map[string]Peer), byInstance: make(map[string]string)}
 }
 
 // TXT builds the TXT record advertised for a device.
@@ -103,9 +91,9 @@ func TXT(self protocol.DeviceInfo, fingerprint string) map[string]string {
 // learns SRV/A records from other hosts' probe packets), so browsing is
 // restarted periodically, and shortly after an incomplete entry.
 const (
-	defaultBrowseCycle = time.Minute
-	incompleteRetry    = 2 * time.Second
-	peerExpiry         = 5 * time.Minute
+	browseCycle     = time.Minute
+	incompleteRetry = 2 * time.Second
+	peerExpiry      = 5 * time.Minute
 )
 
 // Run advertises (if enabled) and browses until ctx is done.
@@ -119,13 +107,7 @@ func (s *Service) Run(ctx context.Context) error {
 	}
 	failures := 0
 	for ctx.Err() == nil {
-		// dnssd v1.2.14 only stops its socket reader goroutines when the
-		// context error is context.Canceled. A context with a deadline reports
-		// context.DeadlineExceeded when it expires, which the readers ignore;
-		// they then spin forever on the closed sockets. Cancel each cycle
-		// explicitly instead so its error is always context.Canceled.
-		cctx, cancel := context.WithCancel(ctx)
-		cycle := time.AfterFunc(s.browseCycle, cancel)
+		cctx, cancel := context.WithTimeout(ctx, browseCycle)
 		incomplete := make(chan struct{}, 1)
 		go func() {
 			select {
@@ -138,7 +120,7 @@ func (s *Service) Run(ctx context.Context) error {
 			case <-cctx.Done():
 			}
 		}()
-		err := s.lookup(cctx, protocol.ServiceType+".local.", func(e dnssd.BrowseEntry) {
+		err := dnssd.LookupType(cctx, protocol.ServiceType+".local.", func(e dnssd.BrowseEntry) {
 			if !s.add(e) {
 				select {
 				case incomplete <- struct{}{}:
@@ -146,7 +128,6 @@ func (s *Service) Run(ctx context.Context) error {
 				}
 			}
 		}, s.remove)
-		cycle.Stop()
 		cancel()
 		if ctx.Err() != nil {
 			return nil

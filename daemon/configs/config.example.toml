@@ -15,12 +15,8 @@ advertise = true
 interfaces = []
 
 [clipboard]
-# auto selects the native Windows backend or Wayland/X11 on Linux/BSD.
-# Explicit backends: 'wayland', 'x11', 'windows', 'none' (headless).
 backend = 'auto'
-# Windows and X11 use polling; Wayland polls when notifications are unavailable.
 poll_interval = '750ms'
-# Honor password-manager hints and Windows clipboard exclusion metadata.
 skip_sensitive = true
 
 [sync]

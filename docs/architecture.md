@@ -14,8 +14,8 @@
                            ┌──────────────────────────── luniboard daemon ───────────────────────────┐
   CLI / future GUI ──unix──▶ internal/api  ──▶ internal/application (wiring, lifecycle)                        │
    socket (0600)           │                     │                                                            │
-                           │   internal/clipboard ── adapters/clipboard/*                  (wl-clipboard,   │
-                           │     detect + watch/poll        ▲                           xclip, xsel, Win32)   │
+                           │   internal/clipboard ── adapters/clipboard/{wayland,x11,mock}  (wl-clipboard,   │
+                           │     detect + watch/poll        ▲                                  xclip, xsel)   │
                            │            │ ObserveLocal      │ WriteText                                      │
                            │            ▼                   │                                                │
                            │   internal/synchronization (Engine: dedupe, loop/echo prevention, LWW, acks)    │
@@ -73,13 +73,12 @@ type Devices   interface { Get(id string) (device.Device, bool) }
 type History   interface { Add(history.Entry); UpdateDelivery(eventID, deviceID string, s history.DeliveryStatus) }
 ```
 
-Windows implements the text `Adapter` with polling; its constructor is selected through build-tagged
-factories in `internal/clipboard`. Adding macOS requires an `Adapter` (optionally `Watcher`) and
-detection wiring. Service/startup integration is separate and remains Linux-only.
+Adding Windows or macOS means implementing `Adapter` (+ `Watcher` where the OS can notify) and
+registering it in `internal/clipboard/detect.go`, plus a service adapter. Nothing else changes.
 
 ## Data flow
 
-**Local copy → peers.** The clipboard service is notified (`wl-paste --watch`) or polls (X11/Windows), then
+**Local copy → peers.** The clipboard service is notified (`wl-paste --watch`) or polls (X11), then
 calls `Engine.ObserveLocal(read)`. Under the engine's write lock the content is read and hashed; if
 the hash equals the last known content (our own write, or a repeated notification) nothing happens.
 Otherwise an event is created and sent to every connected device whose `send` permission is on.

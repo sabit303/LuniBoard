@@ -45,24 +45,6 @@ jobs:
           sleep 1
           DISPLAY=:99 LUNIBOARD_TEST_REAL_CLIPBOARD=1 go test -count=1 -run Real ./adapters/clipboard/x11/
 
-  windows-clipboard:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: daemon/go.mod
-          cache-dependency-path: daemon/go.sum
-      # Other packages still contain POSIX-only test assertions.
-      - name: Windows clipboard adapter and service tests
-        working-directory: daemon
-        run: go test -count=1 -v ./adapters/clipboard/windows/ ./internal/clipboard/
-        env:
-          LUNIBOARD_TEST_REAL_CLIPBOARD: "1"
-      - name: Build Windows CLI
-        working-directory: daemon
-        run: go build -o luniboard.exe ./cmd/luniboard
-
   cross-compile:
     runs-on: ubuntu-latest
     strategy:

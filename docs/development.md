@@ -8,7 +8,7 @@ daemon/              Go module: daemon + CLI
   cmd/luniboard/   entry point
   pkg/protocol/              wire types (public)
   internal/…                 core packages (see docs/architecture.md)
-  adapters/clipboard/…       OS clipboard adapters (wayland, x11, windows, mock, cmdutil)
+  adapters/clipboard/…       OS clipboard adapters (wayland, x11, mock, cmdutil)
   adapters/service/linux/    systemd user service
   tests/integration/         full daemons in-process with mock clipboards
   tests/e2e/                 the real binary driven through the CLI (build tag e2e)
@@ -39,15 +39,6 @@ cd daemon
 LUNIBOARD_TEST_REAL_CLIPBOARD=1 go test -run Real ./adapters/...   # wl-clipboard / xclip / xsel
 LUNIBOARD_TEST_MDNS=1 go test -run Live ./internal/discovery/      # multicast DNS on the host
 LUNIBOARD_TEST_LOG=1 go test -v ./tests/integration/               # integration tests with debug logs
-```
-
-On Windows, CI targets the native clipboard adapter and clipboard service; the full suite still has
-POSIX-only assertions. To run these tests in PowerShell from `daemon/` (overwrites the clipboard):
-
-```powershell
-$env:LUNIBOARD_TEST_REAL_CLIPBOARD = "1"
-go test -count=1 -v ./adapters/clipboard/windows/ ./internal/clipboard/
-Remove-Item Env:LUNIBOARD_TEST_REAL_CLIPBOARD
 ```
 
 ## Running several daemons on one machine

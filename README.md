@@ -4,9 +4,8 @@ Copy on one device, paste on another — directly over your local network. No cl
 no relay. Clipboard content travels only between devices you paired, over mutually authenticated TLS.
 
 > **Status: early development.** The Linux daemon and CLI (Phases 1–2, plus the desktop parts of
-> Phases 4–5) are implemented and tested. Windows has a native text-only clipboard backend with
-> manual startup; desktop verification is still pending. The Android app, iOS app, macOS clipboard
-> adapter, images/files and the desktop GUI are **not implemented yet**. See the
+> Phases 4–5) are implemented and tested. The Android app, iOS app, Windows/macOS clipboard
+> adapters, images/files and the desktop GUI are **not implemented yet**. See the
 > [roadmap](#roadmap) and [platform compatibility](docs/platform-compatibility.md).
 
 ## What works today
@@ -15,7 +14,6 @@ no relay. Clipboard content travels only between devices you paired, over mutual
   * Wayland via `wl-clipboard` with change notifications (`wl-paste --watch`), polling fallback
   * X11 via `xclip`/`xsel` (polling)
   * automatic session detection, retries until a session is available, headless mode
-* Native Windows text clipboard via `CF_UNICODETEXT` (polling), with manual daemon/start usage
 * Device identity, mutual-TLS transport with certificate pinning, WebSocket sessions
 * Pairing with QR/URI invitations, one-time codes, explicit approval and verification codes
 * Bidirectional, multi-device synchronization of text and URLs with duplicate detection, loop and
@@ -60,9 +58,6 @@ Pair a second computer with `luniboard pair connect '<uri shown by the first>'`,
 on the first after comparing the verification code, then copy something. Full instructions:
 [docs/setup.md](docs/setup.md).
 
-Windows: use the [manual setup](docs/setup.md#windows-manual-setup). Windows installer, service/login
-startup integration and firewall management are not implemented.
-
 ## Documentation
 
 * [Setup and configuration](docs/setup.md)
@@ -92,7 +87,7 @@ desktop/    future desktop GUI (uses the local API)
 | 3 | Android app (Compose, discovery, pairing, share sheet, in-app send, receive) | Not started |
 | 4 | Bidirectional sync, dedupe, loop prevention, multi-device | **Done** in the daemon |
 | 5 | TLS, authentication, revocation, reconnection, rate limiting, history controls | **Done** in the daemon |
-| 6 | Windows and macOS adapters, background services, packaging | In progress: Windows text clipboard implemented; services, packaging and macOS pending |
+| 6 | Windows and macOS adapters, background services, packaging | Not started |
 | 7 | iOS app with Share Extension | Not started |
 | 8 | Images and files (HTTP streaming, progress, limits, integrity) | Not started (protocol extension sketched) |
 | 9 | Optional desktop GUI | Not started (local API ready) |

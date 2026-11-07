@@ -49,17 +49,9 @@ func (e Env) has(tool string) bool {
 	return err == nil
 }
 
-// Detect chooses a backend. backend is "auto", "wayland", "x11" or "windows".
+// Detect chooses a backend. backend is "auto", "wayland" or "x11".
 func Detect(backend string, env Env, maxBytes int64) (Backend, error) {
-	if backend == "windows" && env.GOOS != "windows" {
-		return Backend{}, fmt.Errorf("%w: windows backend is only available on Windows", ErrNoBackend)
-	}
 	switch env.GOOS {
-	case "windows":
-		if backend != "auto" && backend != "windows" {
-			return Backend{}, fmt.Errorf("%w: %s backend is not supported on Windows", ErrNoBackend, backend)
-		}
-		return detectWindows(maxBytes)
 	case "linux", "freebsd", "openbsd", "netbsd", "dragonfly":
 	default:
 		return Backend{}, fmt.Errorf("%w: native clipboard support for %s is not implemented yet", ErrNoBackend, env.GOOS)

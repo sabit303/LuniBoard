@@ -69,10 +69,10 @@ type DiscoveryConfig struct {
 }
 
 type ClipboardConfig struct {
-	// Backend is auto, wayland, x11, windows or none.
+	// Backend is auto, wayland, x11 or none.
 	Backend      string   `toml:"backend"`
 	PollInterval Duration `toml:"poll_interval"`
-	// SkipSensitive ignores password-manager hints and Windows clipboard exclusion metadata.
+	// SkipSensitive ignores content flagged by password managers (x-kde-passwordManagerHint).
 	SkipSensitive bool `toml:"skip_sensitive"`
 }
 
@@ -164,9 +164,9 @@ func (c Config) Validate() error {
 		errs = append(errs, errors.New("network.max_connections must be >= 1"))
 	}
 	switch c.Clipboard.Backend {
-	case "auto", "wayland", "x11", "windows", "none":
+	case "auto", "wayland", "x11", "none":
 	default:
-		errs = append(errs, fmt.Errorf("clipboard.backend %q must be auto, wayland, x11, windows or none", c.Clipboard.Backend))
+		errs = append(errs, fmt.Errorf("clipboard.backend %q must be auto, wayland, x11 or none", c.Clipboard.Backend))
 	}
 	if c.Clipboard.PollInterval.Duration < 100*time.Millisecond {
 		errs = append(errs, errors.New("clipboard.poll_interval must be >= 100ms"))
